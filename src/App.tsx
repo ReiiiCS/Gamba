@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import CaseGamePage from "./games/CaseGamePage";
 import RouletteGamePage from "./games/RouletteGamePage";
+import SlotGamePage from "./games/SlotGamePage";
 
 type Game = {
   title: string;
@@ -11,6 +12,7 @@ type Game = {
   tag?: string;
   playable?: boolean;
   roulette?: boolean;
+  slots?: boolean;
 };
 
 const games: Game[] = [
@@ -32,6 +34,16 @@ const games: Game[] = [
     tag: "PLAY NOW",
     playable: true,
     roulette: true,
+  },
+  {
+    title: "Lucky reels",
+    category: "SLOT MACHINE",
+    description: "Three reels. One line. All virtual.",
+    style: "slots",
+    symbol: "🎰",
+    tag: "PLAY NOW",
+    playable: true,
+    slots: true,
   },
   {
     title: "Wishbound",
@@ -134,6 +146,7 @@ function App() {
   if (selectedGame) {
     const onClose = () => setSelectedGame(null);
     if (selectedGame.roulette) return <RouletteGamePage onClose={onClose} />;
+    if (selectedGame.slots) return <SlotGamePage onClose={onClose} />;
     return selectedGame.playable
       ? <CaseGamePage onClose={onClose} />
       : <ComingSoonPage game={selectedGame} onClose={onClose} />;
@@ -164,7 +177,7 @@ function App() {
             <div className="object-top" />
           </div>
           <div className="hero-art-label">A LITTLE MYSTERY<br />GOES A LONG WAY</div>
-          <div className="hero-art-index">01 — 05</div>
+          <div className="hero-art-index">01 — 06</div>
         </div>
         <div className="hero-copy">
           <div className="eyebrow"><span className="live-dot" /> YOUR NEW HAPPY PLACE</div>
@@ -178,7 +191,7 @@ function App() {
             <span className="hero-note">100% free · 0% pressure</span>
           </div>
         </div>
-        <div className="hero-count"><span>01</span> / 05</div>
+        <div className="hero-count"><span>01</span> / 06</div>
       </section>
 
       <section className="games-section" id="games">
@@ -187,7 +200,7 @@ function App() {
             <p className="section-eyebrow">PICK YOUR NEXT OBSESSION</p>
             <h2>Find your <em>game.</em></h2>
           </div>
-          <span className="game-count">02 LIVE GAMES <i /> 03 IN THE WORKS</span>
+          <span className="game-count">03 LIVE GAMES <i /> 03 IN THE WORKS</span>
         </div>
         <div className="game-grid">
           {games.map((game) => (
