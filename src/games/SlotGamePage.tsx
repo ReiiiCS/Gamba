@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
 const slotSymbols = [
-  { name: "Cherry", plural: "Cherries", icon: "🍒", payout: 20 },
-  { name: "Lemon", plural: "Lemons", icon: "🍋", payout: 30 },
-  { name: "Bell", plural: "Bells", icon: "🔔", payout: 50 },
-  { name: "Diamond", plural: "Diamonds", icon: "💎", payout: 100 },
-  { name: "Seven", plural: "Sevens", icon: "7️⃣", payout: 500 },
+  { name: "Cherry", plural: "Cherries", image: "/slots/cherries.png", payout: 20 },
+  { name: "Lemon", plural: "Lemons", image: "/slots/lemon.png", payout: 30 },
+  { name: "Bell", plural: "Bells", image: "/slots/bell.png", payout: 50 },
+  { name: "Diamond", plural: "Diamonds", image: "/slots/diamond.png", payout: 100 },
+  { name: "Seven", plural: "Sevens", image: "/slots/seven.png", payout: 500 },
 ] as const;
 
 type SlotSymbol = typeof slotSymbols[number];
@@ -21,6 +21,10 @@ const startingBalance = 1000;
 const spinCost = 10;
 const spinDuration = 2350;
 const reelStopIndex = 16;
+
+function SymbolIcon({ symbol, decorative = false }: { symbol: SlotSymbol; decorative?: boolean }) {
+  return <img src={symbol.image} alt={decorative ? "" : symbol.name} draggable={false} />;
+}
 
 function chooseSymbol(): SlotSymbol {
   const sample = new Uint32Array(1);
@@ -144,7 +148,7 @@ export default function SlotGamePage({ onClose }: { onClose: () => void }) {
                         aria-hidden="true"
                       >
                         {strip.map((symbol, symbolIndex) => (
-                          <span key={`${symbol.name}-${symbolIndex}`}>{symbol.icon}</span>
+                          <span key={`${symbol.name}-${symbolIndex}`}><SymbolIcon symbol={symbol} decorative /></span>
                         ))}
                       </div>
                     </div>
@@ -152,15 +156,16 @@ export default function SlotGamePage({ onClose }: { onClose: () => void }) {
                   : reels
                     ? reels.map((symbol, index) => (
                       <div className="slot-reel" key={`${history.length}-${index}`}>
-                        <span>{symbol.icon}</span>
+                        <SymbolIcon symbol={symbol} />
                       </div>
                     ))
                     : slotSymbols.slice(0, 3).map((symbol) => (
                       <div className="slot-reel" key={symbol.name}>
-                        <span>{symbol.icon}</span>
+                        <SymbolIcon symbol={symbol} />
                       </div>
                     ))}
-                <span className="slot-payline" aria-hidden="true" />
+                <span className="slot-payline-pointer" aria-hidden="true" />
+                <span className="slot-payline-pointer slot-payline-pointer-right" aria-hidden="true" />
               </div>
               <button
                 className={`slot-lever-control ${phase === "spinning" ? "is-pulling" : ""}`}
@@ -170,7 +175,7 @@ export default function SlotGamePage({ onClose }: { onClose: () => void }) {
                 aria-label={`Spin for ${spinCost} virtual chips`}
               >
                 <span className="slot-lever-track" aria-hidden="true">
-                  <span className="slot-lever-arm"><i /></span>
+                  <span className="slot-lever-knob" />
                 </span>
                 <span className="slot-lever-label" aria-hidden="true">SPIN</span>
               </button>
@@ -218,7 +223,7 @@ export default function SlotGamePage({ onClose }: { onClose: () => void }) {
               </div>
               {slotSymbols.map((symbol) => (
                 <div className="slot-payout-row" key={symbol.name}>
-                  <span><i aria-hidden="true">{symbol.icon}</i> {symbol.plural}</span>
+                  <span><SymbolIcon symbol={symbol} decorative /> {symbol.plural}</span>
                   <strong>{symbol.payout} chips</strong>
                 </div>
               ))}
@@ -237,7 +242,7 @@ export default function SlotGamePage({ onClose }: { onClose: () => void }) {
                   {history.map((spinRecord) => (
                     <li key={spinRecord.number}>
                       <span className="slot-history-symbols" aria-label={spinRecord.symbols.map((symbol) => symbol.name).join(", ")}>
-                        {spinRecord.symbols.map((symbol, index) => <i aria-hidden="true" key={index}>{symbol.icon}</i>)}
+                        {spinRecord.symbols.map((symbol, index) => <SymbolIcon symbol={symbol} decorative key={index} />)}
                       </span>
                       <span className={spinRecord.payout > 0 ? "slot-history-win" : "slot-history-loss"}>
                         {spinRecord.payout > 0 ? `+${spinRecord.net}` : "−10"} chips
