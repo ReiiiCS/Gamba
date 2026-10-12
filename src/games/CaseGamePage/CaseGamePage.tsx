@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import "./CaseGamePage.css";
 
 type Item = {
   name: string;

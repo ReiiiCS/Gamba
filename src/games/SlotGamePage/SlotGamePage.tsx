@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import "./SlotGamePage.css";
 
 const slotSymbols = [
   { name: "Cherry", plural: "Cherries", image: "/slots/cherries.png", payout: 20 },

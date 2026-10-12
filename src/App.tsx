@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import CaseGamePage from "./games/CaseGamePage";
-import RouletteGamePage from "./games/RouletteGamePage";
-import SlotGamePage from "./games/SlotGamePage";
+import CaseGamePage from "./games/CaseGamePage/CaseGamePage";
+import RouletteGamePage from "./games/RouletteGamePage/RouletteGamePage";
+import SlotGamePage from "./games/SlotGamePage/SlotGamePage";
 
 type Game = {
   title: string;

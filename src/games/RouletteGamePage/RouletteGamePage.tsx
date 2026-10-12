@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import "./RouletteGamePage.css";
 
 const rouletteSpinDuration = 2200;
 const rouletteRedNumbers = new Set([1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]);

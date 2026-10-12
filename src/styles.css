@@ -38,7 +38,6 @@ button { color: inherit; }
 .hero { min-height: 556px; position: relative; display: flex; align-items: center; }
 .hero::before { content: ""; position: absolute; z-index: -1; inset: 0 -8.5%; opacity: .42; background: radial-gradient(ellipse at 76% 48%, #34204f70 0, transparent 36%), linear-gradient(90deg, #11100f 3%, transparent 50%, #11100f 98%); }
 .hero-copy { width: 52%; position: relative; z-index: 1; padding: 50px 0 58px; }
-.eyebrow, .hero-kicker, .section-eyebrow, .card-category, .stage-caption, .odds-heading, .modal-topline { font: 10px var(--mono); letter-spacing: .13em; }
 .eyebrow { color: #c3bdb6; display: flex; align-items: center; gap: 9px; margin-bottom: 26px; }
 .hero-kicker { color: var(--lime); margin: 0 0 14px; }
 h1, h2, p { margin-top: 0; }
@@ -116,12 +115,8 @@ h1 em, .section-heading h2 em, .manifesto h2 em { color: var(--lime); font-style
 .back-button:hover { color: var(--lime); }
 .back-button span { font-size: 17px; }
 .game-page-brand { justify-self: center; font: 800 12px var(--display); letter-spacing: .14em; }
-.sound-toggle { position: absolute; z-index: 3; top: 14px; right: 14px; display: inline-flex; align-items: center; gap: 6px; padding: 8px 9px; border: 1px solid #ffffff20; color: #c6c1ba; background: #17151acc; font: 9px var(--mono); letter-spacing: .05em; cursor: pointer; transition: color .2s, border-color .2s; }
-.sound-toggle:hover, .sound-toggle[aria-pressed="false"] { color: #a39c94; border-color: #ffffff35; }
-.sound-toggle span { color: var(--lime); font-size: 13px; }
 .game-page-badge { justify-self: end; display: inline-flex; align-items: center; gap: 8px; padding: 8px 11px; border: 1px solid #ffffff20; color: #c6c1ba; font: 9px var(--mono); letter-spacing: .06em; }
 .game-page-badge .live-dot { width: 5px; height: 5px; }
-.case-game-content { width: min(100%, 900px); margin: 0 auto; padding: 49px 0 22px; text-align: center; }
 .game-page-heading { margin-bottom: 25px; }
 .game-page-heading .modal-topline { margin-bottom: 9px; }
 .game-page-heading h1 { max-width: none; margin: 0; font: 800 clamp(30px, 4vw, 44px)/1.1 var(--display); letter-spacing: .06em; }
@@ -129,43 +124,11 @@ h1 em, .section-heading h2 em, .manifesto h2 em { color: var(--lime); font-style
 .modal-topline { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--lime); font-size: 9px; }
 .modal-topline .live-dot { width: 5px; height: 5px; }
 .modal-intro { margin: 8px 0 20px; color: #aaa49e; font-size: 12px; }
-.reveal-stage { position: relative; height: clamp(300px, 41vh, 430px); display: grid; place-items: center; overflow: hidden; border: 1px solid #ffffff16; background: radial-gradient(ellipse at 50% 65%, #934db234, transparent 60%), linear-gradient(135deg, #221b2d, #17151a); box-shadow: inset 0 0 90px #0003, 0 18px 70px #0003; }
-.vault-halo { position: absolute; width: 156px; height: 156px; border: 1px solid #e2b9ff6b; border-radius: 50%; box-shadow: 0 0 40px #c75dff24, inset 0 0 32px #be86fb15; transform: scaleY(.44) rotate(-28deg); }
-.vault-symbol { position: relative; color: #e9ceff; font-size: clamp(120px, 17vw, 190px); text-shadow: 0 0 45px #c75dffb0, 0 8px 30px #0009; animation: float 3s ease-in-out infinite; }
-.stage-caption { position: absolute; bottom: 78px; color: #9c8ba6; font-size: 8px; }
-.rolling-items { --roll-offset: -1116px; position: absolute; left: 50%; top: 50%; display: flex; gap: 15px; width: max-content; animation: roll 1.9s cubic-bezier(.12,.76,.17,1) forwards; }
-.rolling-marker { position: absolute; z-index: 2; top: 50%; left: 50%; width: 0; height: clamp(132px, 34%, 150px); transform: translate(-50%, -50%); pointer-events: none; }
-.rolling-marker::before, .rolling-marker::after { content: ""; position: absolute; left: 50%; width: 0; height: 0; transform: translateX(-50%); filter: drop-shadow(0 0 4px #d1f46b90); }
-.rolling-marker::before { top: 0; border-top: 7px solid var(--lime); border-right: 6px solid transparent; border-left: 6px solid transparent; }
-.rolling-marker::after { bottom: 0; border-right: 6px solid transparent; border-bottom: 7px solid var(--lime); border-left: 6px solid transparent; }
-.rolling-item { width: 92px; height: 92px; display: grid; place-items: center; border: 1px solid color-mix(in srgb, var(--item-color), transparent 40%); border-radius: 3px; color: var(--item-color); background: color-mix(in srgb, var(--item-color), #18151c 88%); font: 43px var(--display); box-shadow: 0 0 25px color-mix(in srgb, var(--item-color), transparent 85%); }
-.prize-reveal { display: flex; flex-direction: column; align-items: center; animation: prize-pop .45s cubic-bezier(.17,.89,.32,1.28) both; }
-.prize-symbol { color: var(--prize-color); font: 75px/1 var(--display); text-shadow: 0 0 35px color-mix(in srgb, var(--prize-color), transparent 35%); }
-.prize-rarity { margin: 11px 0 4px; color: var(--prize-color); font: 9px var(--mono); letter-spacing: .1em; text-transform: uppercase; }
-.prize-name { color: var(--paper); font: 700 21px var(--display); }
-.reveal-message { min-height: 18px; margin: 14px 0; color: #a9a29a; font-size: 11px; }
-.stage-open-button { position: absolute; z-index: 3; right: 16px; bottom: 16px; left: 16px; width: min(280px, calc(100% - 32px)); justify-self: center; margin-inline: auto; padding: 14px 42px; text-align: center; }
-.stage-open-button > span { position: absolute; right: 17px; }
-.stage-open-button:not(:disabled):hover { transform: translateY(-2px); }
 .open-button:disabled { opacity: .55; cursor: wait; }
-.odds-panel { padding-top: 18px; margin-top: 24px; border-top: 1px solid #ffffff14; text-align: center; }
 .odds-heading { color: #827b75; font-size: 8px; }
-.odds-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; margin-top: 11px; }
-.odds-item { display: inline-flex; align-items: center; gap: 5px; color: #a8a19a; font: 8px var(--mono); }
-.odds-item i { width: 5px; height: 5px; border-radius: 50%; }
-.odds-item b { color: #e4dfd8; font-weight: 400; }
 .game-page-footnote { margin: 0 auto; padding: 17px 0 25px; color: #77716a; text-align: center; font: 8px var(--mono); letter-spacing: .09em; }
-.coming-page-content { min-height: min(76vh, 720px); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto; text-align: center; }
-.coming-page-content .card-category { margin-top: 15px; }
-.coming-page-content h2 { margin: 0; font: 700 clamp(34px, 5vw, 58px) var(--display); letter-spacing: -.04em; }
-.coming-page-content .modal-intro { max-width: 360px; margin: 12px 0 25px; line-height: 1.7; }
-.coming-page-content .open-button { width: auto; }
-.coming-symbol { color: #e5d0ff; font-size: 73px; text-shadow: 0 0 28px #b480fa77; }
 
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes float { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-9px) rotate(3deg); } }
-@keyframes roll { from { transform: translate(0, -50%); } to { transform: translate(var(--roll-offset), -50%); } }
-@keyframes prize-pop { from { opacity: 0; transform: scale(.6) rotate(-8deg); } to { opacity: 1; transform: scale(1) rotate(0); } }
 
 @media (min-width: 1450px) {
   .hero { min-height: 620px; }
@@ -187,25 +150,11 @@ h1 em, .section-heading h2 em, .manifesto h2 em { color: var(--lime); font-style
   .game-page-header { height: 65px; }
   .back-button { gap: 6px; font-size: 8px; }
   .game-page-brand { font-size: 10px; }
-  .sound-toggle { top: 8px; right: 8px; gap: 4px; padding: 7px 6px; font-size: 7px; }
-  .sound-toggle span { font-size: 11px; }
   .game-page-badge { padding: 7px; font-size: 7px; }
-  .case-game-content { padding-top: 35px; }
   .game-page-heading { margin-bottom: 20px; }
   .game-page-heading h1 { font-size: 31px; }
   .game-page-heading .modal-intro { margin-top: 7px; }
-  .reveal-stage { height: clamp(255px, 38svh, 330px); }
-  .vault-halo { width: 140px; height: 140px; }
-  .vault-symbol { font-size: 125px; }
-  .rolling-item { width: 76px; height: 76px; }
-  .rolling-items { --roll-offset: -948px; }
-  .rolling-marker { height: 118px; }
-  .stage-open-button { bottom: 12px; }
-  .odds-panel { margin-top: 21px; }
-  .odds-list { gap: 8px 11px; }
   .game-page-footnote { max-width: 260px; line-height: 1.8; }
-  .coming-page-content { min-height: calc(100svh - 65px); padding: 20px 5px; }
-  .coming-page-content .open-button { width: 100%; }
   .site-header { height: 69px; }
   .brand { gap: 7px; font-size: 11px; }
   .brand-icon { width: 23px; height: 23px; font-size: 15px; }
@@ -242,222 +191,4 @@ h1 em, .section-heading h2 em, .manifesto h2 em { color: var(--lime); font-style
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-}
-
-.art-roulette {
-  --art-a: #d5b45b;
-  --art-b: #1b5941;
-  background: radial-gradient(ellipse at 52% 35%, #e5c15c50, transparent 30%), radial-gradient(ellipse at 50% 70%, #1ac17b39, transparent 48%), linear-gradient(135deg, #245f49, #172e29 80%);
-}
-.art-roulette .card-art-symbol { color: #f6d97d; text-shadow: 0 0 30px #f4d373a8, 0 6px 24px #0008; }
-.roulette-page { background: radial-gradient(ellipse at 50% 35%, #17533b38, transparent 54%), #11100f; }
-.roulette-content { width: min(100%, 1080px); margin: 0 auto; padding: 38px 0 0; }
-.roulette-content .game-page-heading { margin-bottom: 25px; text-align: center; }
-.roulette-content .game-page-heading h1 { font-size: clamp(30px, 4vw, 42px); }
-.roulette-layout { display: grid; grid-template-columns: minmax(240px, .75fr) minmax(0, 1.5fr); gap: 17px; align-items: stretch; }
-.roulette-wheel-panel { display: flex; flex-direction: column; align-items: center; padding: 23px 18px 17px; border: 1px solid #ffffff18; background: linear-gradient(155deg, #1b211d, #171514 76%); text-align: center; }
-.roulette-wheel-caption { max-width: 230px; margin: 12px 0 0; color: #8f8981; font-size: 9px; line-height: 1.5; }
-.roulette-wheel { position: relative; isolation: isolate; width: min(100%, 214px); aspect-ratio: 1; padding: 11px; border: 1px solid #dfbf6870; border-radius: 50%; background: repeating-conic-gradient(from -5deg, #d9b85d 0deg 2deg, #4b3820 2deg 9.73deg); box-shadow: 0 0 34px #d5b45b20, 0 12px 35px #0007, inset 0 0 0 4px #11100f; }
-.roulette-wheel-disc { width: 100%; height: 100%; transition: transform 2.2s cubic-bezier(.15,.72,.13,1); }
-.roulette-wheel-rim { width: 100%; height: 100%; display: grid; place-items: center; padding: 10px; border: 3px solid #141310; border-radius: 50%; }
-.roulette-wheel-face { position: relative; isolation: isolate; width: 100%; height: 100%; display: grid; place-items: center; border: 5px solid #9b7a3b; border-radius: 50%; box-shadow: inset 0 0 20px #0009; }
-.roulette-wheel-face::before { position: absolute; z-index: 0; inset: 31%; border: 3px solid #9b7a3b; border-radius: 50%; background: radial-gradient(circle at 38% 32%, #337252, #173a2d 75%); box-shadow: inset 0 0 16px #0009; content: ""; }
-.roulette-pocket-ring { position: absolute; inset: 0; border-radius: 50%; }
-.roulette-pocket-number { position: absolute; top: 50%; left: 50%; z-index: 1; width: 15px; height: 13px; display: grid; place-items: center; color: #fff4cf; font: 600 7px var(--mono); text-shadow: 0 1px 2px #000; }
-.roulette-ball-track { position: absolute; inset: 22%; z-index: 2; border-radius: 50%; pointer-events: none; }
-.roulette-ball-track.is-spinning { animation: roulette-ball-spin 2.2s cubic-bezier(.15,.72,.13,1) both; }
-.roulette-ball { position: absolute; top: 0; left: 50%; width: 10px; height: 10px; border: 1px solid #c9c9c9; border-radius: 50%; background: radial-gradient(circle at 32% 28%, #fff, #dfdcd1 58%, #8d8981); box-shadow: 0 1px 5px #000c, 0 0 6px #fff8; transform: translateX(-50%); }
-.roulette-result { position: absolute; z-index: 3; top: 50%; left: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 68px; height: 68px; border: 2px solid #dbbd69; border-radius: 50%; color: #fff; background: #247044; box-shadow: 0 0 18px #0008; transform: translate(-50%, -50%); }
-.roulette-result.red { background: #a92835; }
-.roulette-result.black { background: #171615; }
-.roulette-result span { font: 700 27px/1 var(--display); }
-.roulette-result small { margin-top: 4px; font: 6px var(--mono); letter-spacing: .07em; }
-.roulette-balance, .roulette-bet-summary { width: 100%; display: flex; justify-content: space-between; align-items: baseline; margin-top: 17px; color: #99938b; font: 8px var(--mono); letter-spacing: .06em; }
-.roulette-balance strong { color: var(--lime); font: 700 18px var(--display); letter-spacing: 0; }
-.roulette-bet-summary { padding-top: 11px; margin-top: 9px; border-top: 1px solid #ffffff14; }
-.roulette-bet-summary strong { color: #e6dfd4; font: 10px var(--mono); }
-.roulette-spin-button { position: relative; width: 100%; margin-top: 17px; padding: 14px 35px 14px 14px; }
-.roulette-spin-button > span { position: absolute; right: 13px; }
-.roulette-spin-button:disabled { opacity: .55; cursor: not-allowed; }
-.roulette-status { min-height: 34px; margin: 12px 0 0; color: #aaa49e; font-size: 10px; line-height: 1.6; }
-.roulette-betting { min-width: 0; padding: 20px; border: 1px solid #ffffff18; background: linear-gradient(145deg, #1b211d, #151413); }
-.roulette-betting-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.roulette-betting-heading p { margin: 5px 0 0; color: #9d9790; font-size: 10px; }
-.roulette-free-note { color: var(--lime); font: 7px var(--mono); letter-spacing: .08em; }
-.roulette-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 19px; }
-.roulette-chip { width: 43px; height: 43px; border: 2px dashed #b9a56c; border-radius: 50%; color: #eee3c0; background: #30291c; font: 10px var(--mono); cursor: pointer; transition: transform .2s, border-color .2s, background .2s; }
-.roulette-chip:hover:not(:disabled) { transform: translateY(-2px); }
-.roulette-chip.is-selected { border-style: solid; border-color: var(--lime); color: #181a11; background: var(--lime); }
-.roulette-chip:disabled { opacity: .5; cursor: not-allowed; }
-.roulette-bet-types { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 15px; }
-.roulette-bet-type, .roulette-outside-bet { padding: 8px 10px; border: 1px solid #ffffff22; border-radius: 2px; color: #c5bfb6; background: #211f1c; font: 8px var(--mono); cursor: pointer; transition: border-color .15s, color .15s, background .15s; }
-.roulette-bet-type:hover:not(:disabled), .roulette-outside-bet:hover:not(:disabled) { border-color: #d1f46b80; color: var(--paper); }
-.roulette-bet-type.is-selected, .roulette-outside-bet.is-selected { border-color: var(--lime); color: #17190e; background: var(--lime); }
-.roulette-bet-type:disabled, .roulette-outside-bet:disabled { cursor: wait; }
-.roulette-bet-type-info { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 10px 0; margin-top: 10px; border-top: 1px solid #ffffff12; color: #aaa49e; font: 8px var(--mono); }
-.roulette-bet-type-info span:first-child { color: var(--lime); }
-.roulette-outside-bets { display: flex; flex-wrap: wrap; gap: 7px; margin: 0 0 15px; }
-.roulette-outside-bet { min-height: 38px; }
-.roulette-number-section { padding: 12px; border: 1px solid #4f765c; background: linear-gradient(140deg, #1d6345, #16432f); }
-.roulette-section-label { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 9px; color: #d2c391; font: 8px var(--mono); letter-spacing: .08em; }
-.roulette-section-label span:last-child { color: #bdc7ae; }
-.roulette-number-grid { display: grid; grid-template-columns: 36px repeat(12, minmax(30px, 1fr)); grid-template-rows: repeat(3, 39px); gap: 4px; min-width: 508px; }
-.roulette-number { position: relative; display: grid; place-items: center; min-width: 0; padding: 0; border: 1px solid #ffffff26; border-radius: 2px; color: #fff; font: 10px var(--mono); cursor: pointer; transition: filter .15s, box-shadow .15s, transform .15s; }
-.roulette-number.red { background: #a92835; }
-.roulette-number.black { background: #191817; }
-.roulette-number.green { background: #1c8050; }
-.roulette-number:hover:not(:disabled) { z-index: 1; filter: brightness(1.3); transform: scale(1.06); }
-.roulette-number.is-selected { z-index: 2; border: 2px solid var(--lime); box-shadow: 0 0 0 2px #11100f, 0 0 14px #d1f46b9c; }
-.roulette-number.is-result { outline: 2px solid #fff; outline-offset: 2px; }
-.roulette-number:disabled { cursor: wait; }
-.roulette-pending-note { min-height: 32px; margin: 12px 0 8px; color: #aaa49e; font-size: 10px; line-height: 1.6; }
-.roulette-pending-note strong { color: var(--paper); }
-.roulette-place-bet { width: 100%; padding: 13px 14px; }
-.roulette-place-bet:disabled { opacity: .48; cursor: not-allowed; }
-.roulette-bets-list { padding-top: 13px; margin-top: 15px; border-top: 1px solid #ffffff18; }
-.roulette-bets-list > .roulette-section-label { margin-bottom: 7px; }
-.roulette-bet-slip { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 2px; border-bottom: 1px solid #ffffff10; color: #ded8ce; font: 9px var(--mono); }
-.roulette-bet-slip > span { display: flex; flex-direction: column; gap: 4px; }
-.roulette-bet-slip small { color: #99938b; font: 7px var(--mono); }
-.roulette-bet-slip button { width: 26px; height: 26px; border: 1px solid #ffffff22; border-radius: 50%; color: #c9bfb1; background: transparent; font-size: 16px; cursor: pointer; }
-.roulette-bet-slip button:hover:not(:disabled) { border-color: #ff8181; color: #ff8181; }
-.roulette-bet-slip button:disabled { cursor: wait; }
-.roulette-math-panel, .roulette-payout-table { padding: 13px; margin-top: 17px; border: 1px solid #ffffff16; background: #11110f80; }
-.roulette-math-panel p { margin: 9px 0 0; color: #a9a39b; font-size: 9px; line-height: 1.65; }
-.roulette-math-panel strong { color: #e9e2d7; font-weight: 600; }
-.roulette-math-panel .roulette-edge { padding-top: 9px; border-top: 1px solid #ffffff12; color: #c1baaf; }
-.roulette-math-panel .roulette-edge strong { color: var(--lime); }
-.roulette-payout-table > .odds-heading { display: block; margin-bottom: 8px; }
-.roulette-payout-table > div { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-top: 1px solid #ffffff10; color: #aaa49e; font: 8px var(--mono); }
-.roulette-payout-table > div strong { color: #e8e0d5; font-weight: 500; }
-.roulette-payout-table > p { margin: 9px 0 0; color: #aaa49e; font-size: 9px; line-height: 1.6; }
-.roulette-clear-button { display: block; margin: 12px auto 0; padding: 6px 8px; border: 0; color: #9c968f; background: transparent; font: 8px var(--mono); letter-spacing: .08em; cursor: pointer; }
-.roulette-clear-button:hover:not(:disabled) { color: var(--paper); }
-.roulette-clear-button:disabled { cursor: wait; }
-.roulette-history { display: flex; align-items: center; justify-content: center; gap: 15px; padding-top: 17px; margin-top: 21px; border-top: 1px solid #ffffff14; }
-.roulette-history > div { display: flex; gap: 6px; }
-.roulette-history-number { width: 25px; height: 25px; display: grid; place-items: center; border: 1px solid #ffffff23; border-radius: 50%; color: #fff; font: 9px var(--mono); }
-.roulette-history-number.red { background: #a92835; }
-.roulette-history-number.black { background: #191817; }
-.roulette-history-number.green { background: #1c8050; }
-@keyframes roulette-ball-spin { from { transform: rotate(0deg); } to { transform: rotate(-1440deg); } }
-
-.art-slots { --art-a: #e19d4d; --art-b: #a64255; background: radial-gradient(ellipse at 67% 24%, #fff2a45c, transparent 22%), radial-gradient(ellipse at 30% 23%, #fc797970, transparent 32%), linear-gradient(135deg, #aa553f, #47234b 80%); }
-.slot-content { width: min(100%, 1040px); margin: 0 auto; padding: 40px 0 22px; }
-.slot-content .game-page-heading { margin-bottom: 23px; text-align: center; }
-.slot-content .game-page-heading h1 { max-width: none; margin: 0; font: 800 clamp(30px, 4vw, 42px)/1.1 var(--display); letter-spacing: .06em; }
-.slot-content .game-page-heading .modal-intro { margin: 8px 0 0; }
-.slot-layout { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(270px, .85fr); gap: 16px; align-items: stretch; }
-.slot-machine-panel, .slot-side-panel > section { border: 1px solid #ffffff18; background: linear-gradient(145deg, #1b1a1c, #141312); }
-.slot-machine-panel { display: flex; flex-direction: column; align-items: center; padding: 21px 24px 15px; background: radial-gradient(ellipse at 50% 35%, #9d4b2522, transparent 58%), linear-gradient(145deg, #251c1b, #171514); }
-.slot-machine-topline { width: 100%; display: flex; justify-content: space-between; color: #c18d56; font: 8px var(--mono); letter-spacing: .1em; }
-.slot-machine-topline span:first-child { color: #efbd63; font-weight: 500; }
-.slot-machine-controls { width: min(100%, 510px); display: grid; grid-template-columns: minmax(0, 1fr) 48px; align-items: center; gap: 13px; margin: 25px auto 18px; }
-.slot-reels { position: relative; width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding: 15px; border: 5px solid #704634; border-radius: 8px; background: linear-gradient(145deg, #e2c28b, #8a583d 30%, #3b2925 72%, #d3a96e); box-shadow: inset 0 0 0 2px #f6dba46b, 0 12px 28px #0007; }
-.slot-reel { position: relative; aspect-ratio: .85; display: grid; place-items: center; overflow: hidden; border: 1px solid #ffffffb0; border-radius: 3px; color: #322217; background: linear-gradient(110deg, #d8d3c4, #fffdf2 48%, #ded9ca); box-shadow: inset 0 4px 12px #0002, 0 2px 4px #0006; }
-.slot-reel > img { width: 78%; height: 78%; object-fit: contain; filter: drop-shadow(0 3px 2px #0002); }
-.slot-reel-strip { position: absolute; top: 0; left: 0; width: 100%; height: 2000%; display: flex; flex-direction: column; animation: slot-reel-roll var(--reel-duration) cubic-bezier(.12,.75,.2,1) both; }
-.slot-reel-strip > span { height: 5%; flex: 0 0 5%; display: grid; place-items: center; }
-.slot-reel-strip img { width: 78%; height: 78%; object-fit: contain; filter: drop-shadow(0 3px 2px #0002); }
-@keyframes slot-reel-roll { to { transform: translateY(var(--reel-stop)); } }
-.slot-payline-pointer { position: absolute; z-index: 2; top: 50%; left: 4px; width: 0; height: 0; border-top: 7px solid transparent; border-bottom: 7px solid transparent; border-left: 10px solid #fbd86b; filter: drop-shadow(0 0 4px #f5c55c); transform: translateY(-50%); pointer-events: none; }
-.slot-payline-pointer-right { right: 4px; left: auto; transform: translateY(-50%) rotate(180deg); }
-.slot-reels.is-spinning .slot-reel-strip > span { filter: blur(1px); }
-.slot-lever-control { position: relative; width: 48px; height: 116px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 8px; padding: 7px 4px 9px; border: 1px solid #ffffff22; border-radius: 24px 24px 7px 7px; color: #c9bfb1; background: linear-gradient(90deg, #211c1a, #39302a 48%, #201b18); box-shadow: inset 0 0 0 3px #0003, 0 5px 12px #0006; cursor: pointer; transition: border-color .2s, filter .2s; }
-.slot-lever-control:hover:not(:disabled), .slot-lever-control:focus-visible { border-color: #efbd63; filter: brightness(1.2); }
-.slot-lever-control:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
-.slot-lever-track { position: absolute; top: 12px; right: 0; bottom: 31px; left: 0; width: 6px; margin: 0 auto; border: 1px solid #080706; border-radius: 5px; background: #100e0d; box-shadow: inset 0 0 4px #000; }
-.slot-lever-knob { position: absolute; top: -6px; left: 50%; width: 20px; height: 20px; border: 2px solid #ffdb7d; border-radius: 50%; background: radial-gradient(circle at 32% 26%, #ffe99b, #c87530 72%, #793619); box-shadow: 0 2px 4px #0008; transform: translateX(-50%); transition: transform .3s cubic-bezier(.2,.75,.25,1); }
-.slot-lever-control.is-pulling .slot-lever-knob { transform: translate(-50%, 56px); }
-.slot-lever-label { color: #efbd63; font: 7px var(--mono); letter-spacing: .08em; }
-.slot-lever-control:disabled { opacity: .72; cursor: wait; }
-.slot-balance { width: min(100%, 440px); display: flex; align-items: center; justify-content: space-between; gap: 12px; color: #aaa49e; font: 8px var(--mono); letter-spacing: .06em; }
-.slot-balance strong { color: var(--lime); font: 700 20px var(--display); letter-spacing: 0; }
-.slot-status { min-height: 33px; margin: 10px 0 0; color: #aaa49e; text-align: center; font-size: 10px; line-height: 1.6; }
-.slot-reset-button { padding: 8px 10px; border: 1px solid #ffffff30; color: #ded8ce; background: transparent; font: 8px var(--mono); letter-spacing: .07em; cursor: pointer; }
-.slot-reset-button:hover { border-color: var(--lime); color: var(--lime); }
-.slot-side-panel { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
-.slot-stats { display: grid; grid-template-columns: repeat(3, 1fr); }
-.slot-stats > div { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 12px 6px; border-right: 1px solid #ffffff12; }
-.slot-stats > div:last-child { border-right: 0; }
-.slot-stats span, .slot-history-count, .slot-payout-bet { color: #8f8982; font: 7px var(--mono); letter-spacing: .08em; }
-.slot-stats strong { color: var(--paper); font: 700 19px var(--display); }
-.slot-payout-panel, .slot-history-panel { padding: 13px 15px; }
-.slot-panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 9px; margin-bottom: 8px; }
-.slot-panel-heading .odds-heading { font-size: 8px; }
-.slot-payout-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 7px 0; border-top: 1px solid #ffffff10; color: #c7c0b7; font: 9px var(--mono); }
-.slot-payout-row > span { display: inline-flex; align-items: center; gap: 8px; }
-.slot-payout-row img { width: 23px; height: 23px; object-fit: contain; }
-.slot-payout-row strong { color: #eae3d9; font-weight: 500; }
-.slot-payout-note, .slot-empty-history { margin: 8px 0 0; color: #918b83; font-size: 9px; line-height: 1.55; }
-.slot-history-list { max-height: 190px; overflow-y: auto; padding: 0; margin: 0; list-style: none; }
-.slot-history-list li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 0; border-top: 1px solid #ffffff10; font: 9px var(--mono); }
-.slot-history-symbols { display: flex; gap: 5px; }
-.slot-history-symbols img { width: 20px; height: 20px; object-fit: contain; }
-.slot-history-win { color: var(--lime); }
-.slot-history-loss { color: #aaa49e; }
-.slot-math-note { padding: 13px 15px; margin-top: 14px; border: 1px solid #ffffff14; background: #11110f80; }
-.slot-math-note p { margin: 8px 0 0; color: #a9a39b; font-size: 9px; line-height: 1.7; }
-.slot-math-note strong { color: var(--lime); font-weight: 600; }
-
-@media (max-width: 900px) {
-  .slot-layout { grid-template-columns: minmax(0, 1fr) minmax(250px, .8fr); }
-  .roulette-content { padding-top: 30px; }
-  .roulette-layout { grid-template-columns: minmax(0, 1fr); }
-  .roulette-wheel-panel { display: grid; grid-template-columns: minmax(140px, 190px) minmax(0, 1fr); column-gap: 20px; }
-  .roulette-wheel { grid-column: 1; grid-row: 1 / span 5; width: min(100%, 190px); }
-  .roulette-balance, .roulette-bet-summary { grid-column: 2; }
-  .roulette-balance { align-self: end; }
-  .roulette-bet-summary { align-self: start; }
-  .roulette-spin-button, .roulette-status { grid-column: 2; }
-  .roulette-spin-button { align-self: end; }
-  .roulette-status { align-self: start; }
-}
-@media (max-width: 600px) {
-  .slot-content { padding-top: 25px; }
-  .slot-content .game-page-heading { margin-bottom: 17px; }
-  .slot-content .game-page-heading h1 { font-size: 29px; }
-  .slot-content .game-page-heading .modal-intro { max-width: 290px; margin: 7px auto 0; line-height: 1.6; }
-  .slot-layout { grid-template-columns: minmax(0, 1fr); gap: 12px; }
-  .slot-machine-panel { padding: 16px 12px 12px; }
-  .slot-machine-controls { grid-template-columns: minmax(0, 1fr) 39px; gap: 8px; margin: 19px auto 14px; }
-  .slot-reels { gap: 7px; padding: 10px; border-width: 4px; }
-  .slot-lever-control { width: 39px; height: 101px; }
-  .slot-lever-knob { width: 18px; height: 18px; }
-  .slot-lever-control.is-pulling .slot-lever-knob { transform: translate(-50%, 43px); }
-  .slot-balance strong { font-size: 17px; }
-  .slot-payout-panel, .slot-history-panel { padding: 12px; }
-  .slot-history-list { max-height: 150px; }
-  .slot-math-note { padding: 12px; }
-  .roulette-content { padding-top: 25px; }
-  .roulette-content .game-page-heading { margin-bottom: 17px; }
-  .roulette-content .game-page-heading h1 { font-size: 29px; }
-  .roulette-content .game-page-heading .modal-intro { max-width: 290px; margin: 7px auto 0; line-height: 1.6; }
-  .roulette-wheel-panel { grid-template-columns: minmax(105px, 140px) minmax(0, 1fr); gap: 0 13px; padding: 16px 12px 11px; }
-  .roulette-wheel { grid-row: 1 / span 4; width: 100%; padding: 7px; }
-  .roulette-wheel-rim { padding: 7px; }
-  .roulette-wheel-face { border-width: 3px; }
-  .roulette-pocket-number { width: 12px; height: 11px; font-size: 6px; }
-  .roulette-ball { width: 8px; height: 8px; }
-  .roulette-result { width: 52px; height: 52px; }
-  .roulette-result span { font-size: 22px; }
-  .roulette-result small { font-size: 5px; }
-  .roulette-balance, .roulette-bet-summary { margin-top: 9px; font-size: 7px; }
-  .roulette-balance strong { font-size: 15px; }
-  .roulette-bet-summary { padding-top: 8px; }
-  .roulette-spin-button { padding: 12px 25px 12px 8px; font-size: 8px; letter-spacing: .04em; }
-  .roulette-spin-button > span { right: 8px; }
-  .roulette-status { min-height: 44px; font-size: 9px; }
-  .roulette-betting { padding: 14px 11px; }
-  .roulette-bet-type { padding: 7px 8px; font-size: 7px; }
-  .roulette-bet-type-info { gap: 6px 9px; font-size: 7px; }
-  .roulette-free-note { font-size: 6px; text-align: right; }
-  .roulette-number-section { padding: 9px; overflow-x: auto; }
-  .roulette-number-grid { grid-template-columns: 29px repeat(12, 31px); grid-template-rows: repeat(3, 36px); min-width: 0; width: max-content; }
-  .roulette-chip { width: 39px; height: 39px; }
-  .roulette-history { flex-direction: column; gap: 9px; }
-  .roulette-history > div { flex-wrap: wrap; justify-content: center; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .slot-lever-knob { transition-duration: 0s; }
 }
