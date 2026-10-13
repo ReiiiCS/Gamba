@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import CaseGamePage from "./games/CaseGamePage/CaseGamePage";
 import RouletteGamePage from "./games/RouletteGamePage/RouletteGamePage";
 import SlotGamePage from "./games/SlotGamePage/SlotGamePage";
+import PlinkoGamePage from "./games/PlinkoGamePage/PlinkoGamePage";
 
 type Game = {
   title: string;
@@ -13,6 +14,7 @@ type Game = {
   playable?: boolean;
   roulette?: boolean;
   slots?: boolean;
+  plinko?: boolean;
 };
 
 const games: Game[] = [
@@ -44,6 +46,16 @@ const games: Game[] = [
     tag: "PLAY NOW",
     playable: true,
     slots: true,
+  },
+  {
+    title: "Gold drop",
+    category: "PEG DROP",
+    description: "Watch the ball find its multiplier.",
+    style: "plinko",
+    symbol: "●",
+    tag: "PLAY NOW",
+    playable: true,
+    plinko: true,
   },
   {
     title: "Wishbound",
@@ -147,6 +159,7 @@ function App() {
     const onClose = () => setSelectedGame(null);
     if (selectedGame.roulette) return <RouletteGamePage onClose={onClose} />;
     if (selectedGame.slots) return <SlotGamePage onClose={onClose} />;
+    if (selectedGame.plinko) return <PlinkoGamePage onClose={onClose} />;
     return selectedGame.playable
       ? <CaseGamePage onClose={onClose} />
       : <ComingSoonPage game={selectedGame} onClose={onClose} />;
