@@ -40,8 +40,11 @@
 .plinko-balance strong { color: var(--lime); font: 700 18px var(--display); letter-spacing: 0; }
 .plinko-bet-summary { padding-top: 11px; margin-top: 9px; border-top: 1px solid #ffffff14; }
 .plinko-bet-summary strong { color: #e6dfd4; font: 9px var(--mono); }
-.plinko-drop-button { position: relative; width: 100%; margin-top: 17px; padding: 14px 35px 14px 14px; }
-.plinko-drop-button > span { position: absolute; right: 13px; }
+.plinko-drop-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; width: 100%; margin-top: 17px; }
+.plinko-drop-button { position: relative; width: 100%; min-height: 45px; padding: 12px 26px 12px 10px; font-size: 9px; }
+.plinko-drop-button > span { position: absolute; right: 10px; }
+.plinko-auto-button { border: 1px solid #d1f46b70; color: var(--lime); background: #1c2516; }
+.plinko-auto-button:hover:not(:disabled), .plinko-auto-button.is-active { border-color: var(--lime); color: #17190e; background: var(--lime); }
 .plinko-drop-button:disabled { opacity: .55; cursor: not-allowed; }
 .plinko-status { min-height: 44px; margin: 12px 0 0; color: #aaa49e; font-size: 10px; line-height: 1.6; }
 .plinko-status strong { color: var(--paper); font-weight: 600; }
@@ -90,7 +93,7 @@
 .plinko-stats strong { color: var(--paper); font: 700 17px var(--display); }
 .plinko-history { margin-top: 17px; padding-top: 15px; border-top: 1px solid #ffffff16; }
 .plinko-history-count { color: #827b75; font: 7px var(--mono); }
-.plinko-history-list { margin: 0; padding: 0; list-style: none; }
+.plinko-history-list { max-height: 220px; overflow-y: auto; overscroll-behavior: contain; margin: 0; padding: 0; list-style: none; }
 .plinko-history-list li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 2px; border-bottom: 1px solid #ffffff10; color: #ded8ce; font: 9px var(--mono); }
 .plinko-history-mult { font-weight: 500; }
 .plinko-history-mult.m-high { color: var(--lime); }
@@ -124,8 +127,9 @@
   .plinko-balance, .plinko-bet-summary { margin-top: 12px; font-size: 7px; }
   .plinko-balance strong { font-size: 15px; }
   .plinko-bet-summary { padding-top: 8px; }
-  .plinko-drop-button { padding: 12px 25px 12px 8px; font-size: 8px; letter-spacing: .04em; }
-  .plinko-drop-button > span { right: 8px; }
+  .plinko-drop-actions { gap: 6px; margin-top: 12px; }
+  .plinko-drop-button { min-height: 40px; padding: 10px 20px 10px 6px; font-size: 7px; letter-spacing: .02em; }
+  .plinko-drop-button > span { right: 6px; }
   .plinko-status { min-height: 52px; font-size: 9px; }
   .plinko-peg { width: 6px; height: 6px; }
   .plinko-ball { width: 7px; height: 7px; }

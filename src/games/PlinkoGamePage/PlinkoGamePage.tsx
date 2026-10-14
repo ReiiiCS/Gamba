@@ -4,7 +4,7 @@ import "./PlinkoGamePage.css";
 const plinkoChipValues = [10, 25, 50, 100];
 const plinkoRowOptions = [8, 12, 16] as const;
 const plinkoRiskOptions = ["low", "medium", "high"] as const;
-const startingBalance = 1000;
+const startingBalance = 100000;
 const ballStartX = 50;
 const ballStartY = 4;
 const slotY = 84;
@@ -44,7 +44,6 @@ type ActiveBall = {
   y: number;
   vx: number;
   vy: number;
-  bounces: number;
 };
 
 // Multiplier tables per risk level and row count. Each mirrors around its center.
@@ -134,13 +133,6 @@ function playTone(
   oscillator.stop(startAt + duration);
 }
 
-function playBounceTick(context: AudioContext, ball: ActiveBall) {
-  // Rising pitch with each bounce, plus a small per-ball offset so overlapping
-  // falls stay distinguishable.
-  const pitch = 620 + ball.bounces * 38 + (ball.id % 5) * 14;
-  playTone(context, pitch, context.currentTime + 0.02, 0.05, 0.05, "triangle");
-}
-
 function playLandingChime(context: AudioContext, multiplier: number) {
   const note = multiplier >= 100 ? 1046.5
     : multiplier >= 10 ? 784
@@ -167,9 +159,11 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
   const [lastDrop, setLastDrop] = useState<DropRecord | null>(null);
   const [restingBall, setRestingBall] = useState<Pt | null>(null);
   const [flyingBallIds, setFlyingBallIds] = useState<number[]>([]);
+  const [autoDropping, setAutoDropping] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const closeButton = useRef<HTMLButtonElement>(null);
   const boardRef = useRef<HTMLDivElement>(null);
+  const balanceRef = useRef(startingBalance);
   const collisionGapPct = useRef(defaultCollisionGapPct);
   const activeBalls = useRef<Map<number, ActiveBall>>(new Map());
   const ballEls = useRef<Map<number, HTMLSpanElement>>(new Map());
@@ -200,6 +194,23 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
     };
   }, [onClose]);
 
+  useEffect(() => {
+    if (!autoDropping) return;
+    if (balanceRef.current < bet) {
+      setAutoDropping(false);
+      return;
+    }
+    drop();
+    const interval = window.setInterval(() => {
+      if (balanceRef.current < bet) {
+        setAutoDropping(false);
+        return;
+      }
+      drop();
+    }, 50);
+    return () => window.clearInterval(interval);
+  }, [autoDropping]);
+
   // Convert the ball/peg contact distance (px) into board-% against the board's
   // rendered height, which varies with layout and viewport.
   useEffect(() => {
@@ -228,10 +239,11 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
     setFlyingBallIds((current) => current.filter((ballId) => ballId !== id));
     setSlotIndex(k);
     setRestingBall(slotPosition(k, record.rows));
-    setBalance((current) => current + record.payout);
-    setHistory((current) => [record, ...current].slice(0, 8));
+    balanceRef.current += record.payout;
+    setBalance(balanceRef.current);
+    setHistory((current) => [record, ...current]);
     setLastDrop(record);
-    if (soundEnabled && audioContext.current) {
+    if (record.multiplier >= 1 && soundEnabled && audioContext.current) {
       playLandingChime(audioContext.current, record.multiplier);
     }
   }
@@ -265,16 +277,12 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
         // Bounce off the peg: aim horizontal speed so the ball passes exactly
         // through the next peg, and reflect the vertical speed (with damping).
         ball.x = target.x;
-        if (soundEnabled && audioContext.current) {
-          playBounceTick(audioContext.current, ball);
-        }
         ball.vy = -Math.abs(vy0) * bounceRetention;
         ball.vx = 0;
         ball.targetIndex += 1;
         const next = ball.targets[ball.targetIndex];
         const timeToNext = impactTime(ball.vy, target.y, next.y);
         ball.vx = (next.x - target.x) / timeToNext;
-        ball.bounces += 1;
       }
     }
 
@@ -308,24 +316,24 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
   }
 
   function changeRows(value: number) {
-    if (ballsFlying) return;
+    if (ballsFlying || autoDropping) return;
     setRows(value);
     resetBoard();
   }
 
   function changeRisk(value: Risk) {
-    if (ballsFlying) return;
+    if (ballsFlying || autoDropping) return;
     setRisk(value);
     resetBoard();
   }
 
   function changeBet(value: number) {
-    if (ballsFlying) return;
+    if (ballsFlying || autoDropping) return;
     setBet(value);
   }
 
   function drop() {
-    if (balance < bet) return;
+    if (balanceRef.current < bet) return;
 
     const count = rows;
     const decisions = choosePath(count);
@@ -345,7 +353,8 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
       risk,
     };
 
-    setBalance((current) => current - bet);
+    balanceRef.current -= bet;
+    setBalance(balanceRef.current);
     setSlotIndex(null);
 
     // Waypoints: where the ball's edge meets each peg — the peg's center raised
@@ -375,7 +384,6 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
       y: ballStartY,
       vx: 0,
       vy: 0,
-      bounces: 0,
     };
     activeBalls.current.set(id, ball);
 
@@ -390,6 +398,7 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
 
   function resetBalance() {
     if (ballsFlying) return;
+    balanceRef.current = startingBalance;
     setBalance(startingBalance);
     setHistory([]);
     setLastDrop(null);
@@ -500,15 +509,27 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
               <span>{bet}-CHIP DROP</span>
               <strong>{rows} ROWS · {risk.toUpperCase()} RISK</strong>
             </div>
-            <button
-              className="open-button plinko-drop-button"
-              onClick={drop}
-              disabled={balance < bet}
-              type="button"
-            >
-              DROP THE BALL
-              <ArrowIcon />
-            </button>
+            <div className="plinko-drop-actions">
+              <button
+                className="open-button plinko-drop-button"
+                onClick={drop}
+                disabled={balance < bet || autoDropping}
+                type="button"
+              >
+                DROP THE BALL
+                <ArrowIcon />
+              </button>
+              <button
+                className={`plinko-drop-button plinko-auto-button ${autoDropping ? "is-active" : ""}`}
+                onClick={() => setAutoDropping((active) => !active)}
+                aria-pressed={autoDropping}
+                disabled={!autoDropping && balance < bet}
+                type="button"
+              >
+                {autoDropping ? "STOP AUTO DROP" : "AUTO DROP"}
+                <span aria-hidden="true">{autoDropping ? "■" : "↻"}</span>
+              </button>
+            </div>
             <p className="plinko-status" role="status">
               {ballsFlying
                 ? `${flyingBallIds.length} ${flyingBallIds.length === 1 ? "ball is" : "balls are"} bouncing down the board...`
@@ -537,7 +558,7 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
                   key={value}
                   onClick={() => changeBet(value)}
                   aria-pressed={bet === value}
-                  disabled={ballsFlying}
+                  disabled={ballsFlying || autoDropping}
                   type="button"
                 >
                   {value}
@@ -554,7 +575,7 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
                     key={value}
                     onClick={() => changeRows(value)}
                     aria-pressed={rows === value}
-                    disabled={ballsFlying}
+                    disabled={ballsFlying || autoDropping}
                     type="button"
                   >
                     {value}
@@ -572,7 +593,7 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
                     key={value}
                     onClick={() => changeRisk(value)}
                     aria-pressed={risk === value}
-                    disabled={ballsFlying}
+                    disabled={ballsFlying || autoDropping}
                     type="button"
                   >
                     {value.toUpperCase()}
