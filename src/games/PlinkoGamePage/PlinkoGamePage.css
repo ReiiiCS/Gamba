@@ -1,18 +1,18 @@
 .art-plinko {
-  --art-a: #7ef06b;
-  --art-b: #1d3a63;
-  background: radial-gradient(ellipse at 68% 22%, #b8ff9a4d, transparent 24%), radial-gradient(ellipse at 26% 26%, #4dd3ff4a, transparent 30%), linear-gradient(135deg, #1e4d38, #0d1628 82%);
+  --art-a: #ff5f6b;
+  --art-b: #55200a;
+  background: radial-gradient(ellipse at 68% 22%, #ffb3474d, transparent 24%), radial-gradient(ellipse at 26% 26%, #ff5f6b4a, transparent 30%), linear-gradient(135deg, #6b0209, #1a1a1a 82%);
 }
-.art-plinko .card-art-symbol { color: #c9ffb0; text-shadow: 0 0 30px #7ef06b99, 0 6px 24px #0008; }
+.art-plinko .card-art-symbol { color: #ffc9cc; text-shadow: 0 0 30px #e5091499, 0 6px 24px #0008; }
 
-.plinko-page { background: radial-gradient(ellipse at 50% 32%, #1f6a4830, transparent 50%), #11100f; }
+.plinko-page { background: radial-gradient(ellipse at 50% 32%, #e5091420, transparent 50%), #141414; }
 .plinko-content { width: min(100%, 1080px); margin: 0 auto; padding: 38px 0 0; }
 .plinko-content .game-page-heading { margin-bottom: 25px; text-align: center; }
 .plinko-content .game-page-heading h1 { font-size: clamp(30px, 4vw, 42px); }
 .plinko-layout { display: grid; grid-template-columns: minmax(300px, 1.05fr) minmax(0, 1fr); gap: 17px; align-items: stretch; }
 
-.plinko-board-panel { position: relative; display: flex; flex-direction: column; align-items: center; padding: 23px 18px 17px; border: 1px solid #ffffff18; background: linear-gradient(155deg, #15281f, #171514 76%); text-align: center; }
-.plinko-board { position: relative; isolation: isolate; width: 100%; aspect-ratio: 1 / .78; overflow: hidden; border: 1px solid #ffffff14; border-radius: 2px; background: radial-gradient(ellipse at 50% 30%, #2a5f4338, transparent 52%), radial-gradient(ellipse at 50% 105%, #d9b45b1f, transparent 45%), linear-gradient(180deg, #0e1a15, #101418 72%); box-shadow: inset 0 0 60px #0009, 0 14px 40px #0004; }
+.plinko-board-panel { position: relative; display: flex; flex-direction: column; align-items: center; padding: 23px 18px 17px; border: 1px solid #ffffff18; background: linear-gradient(155deg, #1f1f1f, #141414 76%); text-align: center; }
+.plinko-board { position: relative; isolation: isolate; width: 100%; aspect-ratio: 1 / .78; overflow: hidden; border: 1px solid #ffffff14; border-radius: 2px; background: radial-gradient(ellipse at 50% 30%, #e5091422, transparent 52%), radial-gradient(ellipse at 50% 105%, #d9b45b1f, transparent 45%), linear-gradient(180deg, #1a1414, #101010 72%); box-shadow: inset 0 0 60px #0009, 0 14px 40px #0004; }
 .plinko-board::before { content: ""; position: absolute; z-index: 0; top: 4%; left: 50%; width: 1px; height: 80%; background: linear-gradient(#ffffff0d, #ffffff2e); transform: translateX(-50%); }
 .plinko-peg { position: absolute; z-index: 1; width: 7px; height: 7px; border: 1px solid #d9b45b85; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffe9b0, #b98f3f 70%); box-shadow: 0 1px 2px #000c, 0 0 9px #d9b45b2e; transform: translate(-50%, -50%); }
 .plinko-peg.is-last { background: radial-gradient(circle at 35% 30%, #eaffd3, #4f9c66 70%); border-color: #8fd9a285; box-shadow: 0 1px 2px #000c, 0 0 9px #69d08822; }
@@ -29,43 +29,43 @@
 .plinko-slot.m-even b { color: #c9c3ba; }
 .plinko-slot.m-mid { color: #62d4aa; }
 .plinko-slot.m-mid b { color: #7fe0bb; }
-.plinko-slot.m-high { color: var(--lime); }
-.plinko-slot.m-high b { color: var(--lime); }
+.plinko-slot.m-high { color: var(--accent); }
+.plinko-slot.m-high b { color: var(--accent); }
 .plinko-slot.m-big { color: #ff7ad9; }
 .plinko-slot.m-big b { color: #ff9fe4; text-shadow: 0 0 8px #ff7ad999; }
 .plinko-slot.m-mega { color: #ffd86b; }
 .plinko-slot.m-mega b { color: #ffe9a3; text-shadow: 0 0 10px #ffd86b99; }
 
 .plinko-balance, .plinko-bet-summary { width: 100%; display: flex; justify-content: space-between; align-items: baseline; margin-top: 17px; color: #99938b; font: 8px var(--mono); letter-spacing: .06em; }
-.plinko-balance strong { color: var(--lime); font: 700 18px var(--display); letter-spacing: 0; }
+.plinko-balance strong { color: var(--accent); font: 700 18px var(--display); letter-spacing: 0; }
 .plinko-bet-summary { padding-top: 11px; margin-top: 9px; border-top: 1px solid #ffffff14; }
 .plinko-bet-summary strong { color: #e6dfd4; font: 9px var(--mono); }
 .plinko-drop-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; width: 100%; margin-top: 17px; }
 .plinko-drop-button { position: relative; width: 100%; min-height: 45px; padding: 12px 26px 12px 10px; font-size: 9px; }
 .plinko-drop-button > span { position: absolute; right: 10px; }
-.plinko-auto-button { border: 1px solid #d1f46b70; color: var(--lime); background: #1c2516; }
-.plinko-auto-button:hover:not(:disabled), .plinko-auto-button.is-active { border-color: var(--lime); color: #17190e; background: var(--lime); }
+.plinko-auto-button { border: 1px solid #e5091470; color: var(--accent); background: #2a0d0f; }
+.plinko-auto-button:hover:not(:disabled), .plinko-auto-button.is-active { border-color: var(--accent); color: #ffffff; background: var(--accent); }
 .plinko-drop-button:disabled { opacity: .55; cursor: not-allowed; }
 .plinko-status { min-height: 44px; margin: 12px 0 0; color: #aaa49e; font-size: 10px; line-height: 1.6; }
 .plinko-status strong { color: var(--paper); font-weight: 600; }
 .plinko-reset-button { margin-top: 8px; padding: 7px 10px; border: 1px solid #ffffff2a; border-radius: 2px; color: #b8b1a8; background: transparent; font: 8px var(--mono); letter-spacing: .08em; cursor: pointer; transition: border-color .15s, color .15s; }
-.plinko-reset-button:hover { border-color: var(--lime); color: var(--lime); }
+.plinko-reset-button:hover { border-color: var(--accent); color: var(--accent); }
 
-.plinko-controls { min-width: 0; padding: 20px; border: 1px solid #ffffff18; background: linear-gradient(145deg, #15281f, #151413); }
+.plinko-controls { min-width: 0; padding: 20px; border: 1px solid #ffffff18; background: linear-gradient(145deg, #1f1f1f, #141414); }
 .plinko-panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .plinko-panel-heading p { margin: 5px 0 0; color: #9d9790; font-size: 10px; }
-.plinko-free-note { color: var(--lime); font: 7px var(--mono); letter-spacing: .08em; }
+.plinko-free-note { color: var(--accent); font: 7px var(--mono); letter-spacing: .08em; }
 .plinko-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 16px; }
 .plinko-chip { width: 43px; height: 43px; border: 2px dashed #b9a56c; border-radius: 50%; color: #eee3c0; background: #30291c; font: 10px var(--mono); cursor: pointer; transition: transform .2s, border-color .2s, background .2s; }
 .plinko-chip:hover:not(:disabled) { transform: translateY(-2px); }
-.plinko-chip.is-selected { border-style: solid; border-color: var(--lime); color: #181a11; background: var(--lime); }
+.plinko-chip.is-selected { border-style: solid; border-color: var(--accent); color: #ffffff; background: var(--accent); }
 .plinko-chip:disabled { opacity: .5; cursor: not-allowed; }
 .plinko-setting { margin-top: 15px; }
 .plinko-setting-label { display: block; margin-bottom: 7px; color: #827b75; font: 8px var(--mono); letter-spacing: .1em; }
 .plinko-setting-group { display: flex; flex-wrap: wrap; gap: 6px; }
 .plinko-setting-group button { flex: 1; min-width: 72px; padding: 8px 10px; border: 1px solid #ffffff22; border-radius: 2px; color: #c5bfb6; background: #211f1c; font: 8px var(--mono); cursor: pointer; transition: border-color .15s, color .15s, background .15s; }
-.plinko-setting-group button:hover:not(:disabled) { border-color: #d1f46b80; color: var(--paper); }
-.plinko-setting-group button.is-selected { border-color: var(--lime); color: #17190e; background: var(--lime); }
+.plinko-setting-group button:hover:not(:disabled) { border-color: #e5091480; color: var(--paper); }
+.plinko-setting-group button.is-selected { border-color: var(--accent); color: #ffffff; background: var(--accent); }
 .plinko-setting-group button.is-selected.risk-low { border-color: #62d4aa; color: #0d1a14; background: #62d4aa; }
 .plinko-setting-group button.is-selected.risk-medium { border-color: #ffd86b; color: #1a150a; background: #ffd86b; }
 .plinko-setting-group button.is-selected.risk-high { border-color: #ff7ad9; color: #1e0d18; background: #ff7ad9; }
@@ -73,7 +73,7 @@
 
 .plinko-legend { padding: 13px; margin-top: 17px; border: 1px solid #ffffff16; background: #11110f80; }
 .plinko-legend-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
-.plinko-rtp-badge { color: var(--lime); font: 8px var(--mono); }
+.plinko-rtp-badge { color: var(--accent); font: 8px var(--mono); }
 .plinko-legend-slots { display: flex; align-items: flex-end; gap: 2px; }
 .plinko-legend-slot { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .plinko-legend-slot i { width: 100%; max-width: 18px; display: block; background: #3a3a34; border-radius: 1px 1px 0 0; }
@@ -96,12 +96,12 @@
 .plinko-history-list { max-height: 220px; overflow-y: auto; overscroll-behavior: contain; margin: 0; padding: 0; list-style: none; }
 .plinko-history-list li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 2px; border-bottom: 1px solid #ffffff10; color: #ded8ce; font: 9px var(--mono); }
 .plinko-history-mult { font-weight: 500; }
-.plinko-history-mult.m-high { color: var(--lime); }
+.plinko-history-mult.m-high { color: var(--accent); }
 .plinko-history-mult.m-big { color: #ff9fe4; text-shadow: 0 0 8px #ff7ad980; }
 .plinko-history-mult.m-mega { color: #ffd86b; text-shadow: 0 0 8px #ffd86b80; }
 .plinko-history-mult.m-mid { color: #7fe0bb; }
 .plinko-history-mult.m-low { color: #ca8b8b; }
-.plinko-history-win { color: var(--lime); }
+.plinko-history-win { color: var(--accent); }
 .plinko-history-loss { color: #ca8b8b; }
 .plinko-empty-history { margin: 9px 0 0; color: #827b75; font-size: 9px; }
 
@@ -109,7 +109,7 @@
 .plinko-math-panel p { margin: 9px 0 0; color: #a9a39b; font-size: 9px; line-height: 1.65; }
 .plinko-math-panel strong { color: #e9e2d7; font-weight: 600; }
 .plinko-math-panel .plinko-edge { padding-top: 9px; border-top: 1px solid #ffffff12; color: #c1baaf; }
-.plinko-math-panel .plinko-edge strong { color: var(--lime); }
+.plinko-math-panel .plinko-edge strong { color: var(--accent); }
 
 @keyframes plinko-slot-pulse { from { filter: brightness(2); } to { filter: brightness(1); } }
 
