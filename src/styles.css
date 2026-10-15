@@ -85,7 +85,7 @@ h1 em, .section-heading h2 em, .manifesto h2 em { color: var(--lime); font-style
 .orbit-two { top: 10%; left: 42%; width: 55%; transform: rotate(53deg) scaleY(.43); border-color: #ffffff30; }
 .card-art-symbol { position: absolute; top: 2%; right: 11%; font: 100px/1 var(--display); color: #ffffff5c; text-shadow: 0 0 35px #fff5; transform: rotate(12deg); transition: transform .3s; }
 .game-card:hover .card-art-symbol { transform: rotate(0) scale(1.08); }
-.card-shade { position: absolute; z-index: -1; inset: 0; background: linear-gradient(180deg, transparent 18%, #14121b21 45%, #11100fe8 100%); }
+.card-shade { position: absolute; z-index: -1; inset: 0; background: linear-gradient(180deg, rgba(17, 16, 15, 0) 0%, rgba(17, 16, 15, 0.12) 30%, rgba(17, 16, 15, 0.46) 58%, rgba(17, 16, 15, 0.9) 100%), radial-gradient(circle at 22% 18%, color-mix(in srgb, var(--art-a, #d1f46b) 38%, transparent) 0%, transparent 30%), linear-gradient(135deg, color-mix(in srgb, var(--art-b, #11100f) 72%, #000 28%) 0%, rgba(17, 16, 15, 0.88) 100%); }
 .card-content { position: absolute; inset: auto 18px 18px; display: flex; flex-direction: column; align-items: flex-start; }
 .card-category { margin-bottom: 9px; color: #d1f46b; font-size: 8px; }
 .card-title { margin-bottom: 3px; font: 700 19px var(--display); letter-spacing: -.03em; }
