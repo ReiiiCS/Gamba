@@ -42,7 +42,7 @@ const games: Game[] = [
     category: "SLOT MACHINE",
     description: "Three reels. One line. All virtual.",
     style: "slots",
-    symbol: "🎰",
+    symbol: "777",
     tag: "PLAY NOW",
     playable: true,
     slots: true,
@@ -104,8 +104,6 @@ function GameCard({ game, onSelect }: { game: Game; onSelect: (game: Game) => vo
       aria-label={`${game.title}: ${game.tag}`}
       type="button"
     >
-      <span className="art-orbit orbit-one" />
-      <span className="art-orbit orbit-two" />
       <span className="card-art-symbol" aria-hidden="true">{game.symbol}</span>
       <span className="card-shade" />
       <span className="card-content">

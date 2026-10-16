@@ -1,9 +1,9 @@
 
 
 .art-roulette {
-  --art-a: #e50914;
-  --art-b: #55200a;
-  background: radial-gradient(ellipse at 52% 35%, #ffb34750, transparent 30%), radial-gradient(ellipse at 50% 70%, #e5091439, transparent 48%), linear-gradient(135deg, #6b0209, #1a1a1a 80%);
+  --art-a: #f2cf70;
+  --art-b: #123c2c;
+  background: radial-gradient(ellipse at 52% 35%, #f2cf7050, transparent 30%), radial-gradient(ellipse at 50% 70%, #28ae6d39, transparent 48%), linear-gradient(135deg, #246448, #14231e 80%);
 }
 .art-roulette .card-art-symbol { color: #ff9ea3; text-shadow: 0 0 30px #e50914a8, 0 6px 24px #0008; }
 .roulette-page { background: radial-gradient(ellipse at 50% 35%, #e5091420, transparent 54%), #141414; }

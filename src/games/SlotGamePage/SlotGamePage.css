@@ -1,4 +1,4 @@
-.art-slots { --art-a: #ff8a3d; --art-b: #7a1a1a; background: radial-gradient(ellipse at 67% 24%, #fff2a45c, transparent 22%), radial-gradient(ellipse at 30% 23%, #e5091470, transparent 32%), linear-gradient(135deg, #8f2f1a, #1a1a1a 80%); }
+.art-slots { --art-a: #ffd166; --art-b: #612b1b; background: radial-gradient(ellipse at 67% 24%, #fff2a45c, transparent 22%), radial-gradient(ellipse at 30% 23%, #fb704970, transparent 32%), linear-gradient(135deg, #a64b24, #40201d 80%); }
 .slot-content { width: min(100%, 1040px); margin: 0 auto; padding: 40px 0 22px; }
 .slot-content .game-page-heading { margin-bottom: 23px; text-align: center; }
 .slot-content .game-page-heading h1 { max-width: none; margin: 0; font: 800 clamp(30px, 4vw, 42px)/1.1 var(--display); letter-spacing: .06em; }
