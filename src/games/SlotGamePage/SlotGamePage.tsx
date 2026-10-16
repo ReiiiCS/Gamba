@@ -109,7 +109,7 @@ export default function SlotGamePage({ onClose }: { onClose: () => void }) {
   const latestSpin = history[0];
 
   return (
-    <main className="game-page">
+    <main className="game-page slot-page">
       <header className="game-page-header">
         <button className="back-button" onClick={onClose} ref={closeButton} type="button">
           <span aria-hidden="true">←</span> ALL GAMES

@@ -131,7 +131,7 @@ function ComingSoonPage({ game, onClose }: { game: Game; onClose: () => void }) 
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
   return (
-    <main className="game-page">
+    <main className={`game-page coming-page coming-${game.style}`}>
       <header className="game-page-header">
         <button className="back-button" onClick={onClose} ref={closeButton} type="button">
           <span aria-hidden="true">←</span> ALL GAMES

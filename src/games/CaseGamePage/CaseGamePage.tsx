@@ -115,7 +115,7 @@ export default function CaseGamePage({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <main className="game-page">
+    <main className="game-page case-page">
       <header className="game-page-header">
         <button className="back-button" onClick={onClose} ref={closeButton} type="button">
           <span aria-hidden="true">←</span> ALL GAMES

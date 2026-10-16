@@ -48,8 +48,8 @@ h1 { max-width: 620px; margin-bottom: 18px; font: 400 clamp(46px, 5.8vw, 82px)/1
 h1 em, .section-heading h2 em, .manifesto h2 em { color: var(--accent); font-style: normal; }
 .hero-description { max-width: 390px; margin-bottom: 25px; color: #b3b3b3; font-size: 14px; line-height: 1.75; }
 .hero-actions { display: flex; align-items: center; gap: 17px; }
-.primary-button, .open-button { display: inline-flex; align-items: center; justify-content: center; gap: 25px; padding: 15px 18px; border: 0; border-radius: 4px; color: #ffffff; background: var(--accent); font: 500 10px var(--mono); letter-spacing: .08em; cursor: pointer; transition: transform .2s, background .2s; }
-.primary-button:hover, .open-button:not(:disabled):hover { background: #f6121d; transform: translateY(-2px); }
+.primary-button, .open-button { display: inline-flex; align-items: center; justify-content: center; gap: 25px; padding: 15px 18px; border: 0; border-radius: 4px; color: var(--accent-ink, #ffffff); background: var(--accent); font: 500 10px var(--mono); letter-spacing: .08em; cursor: pointer; transition: transform .2s, background .2s; }
+.primary-button:hover, .open-button:not(:disabled):hover { background: color-mix(in srgb, var(--accent) 86%, #ffffff 14%); transform: translateY(-2px); }
 .hero-note { color: #808080; font: 10px var(--mono); }
 .hero-art { position: absolute; right: -1%; top: 0; bottom: 0; width: 57%; overflow: hidden; }
 .hero-art::before { content: ""; position: absolute; inset: 8% -4% 7% 0; background: radial-gradient(ellipse at 53% 49%, #e5091440, transparent 48%), radial-gradient(ellipse at 69% 35%, #ff5f6b20, transparent 36%); }
@@ -117,7 +117,14 @@ h1 em, .section-heading h2 em, .manifesto h2 em { color: var(--accent); font-sty
 .site-footer > a:last-child { color: #e5e5e5; transition: color .2s; }
 .site-footer > a:last-child:hover { color: var(--accent); }
 
-.game-page { min-height: 100vh; min-height: 100svh; padding: 0 6.1%; background: radial-gradient(ellipse at 50% 33%, #e5091420, transparent 48%), #141414; animation: fade-in .2s ease-out; }
+.game-page { min-height: 100vh; min-height: 100svh; padding: 0 6.1%; background: radial-gradient(ellipse at 50% 33%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 48%), #141414; animation: fade-in .2s ease-out; }
+.case-page { --accent: #e50914; --accent-ink: #ffffff; }
+.roulette-page { --accent: #d6b34e; --accent-ink: #1b1405; }
+.slot-page { --accent: #df39f2; --accent-ink: #1b0420; }
+.plinko-page { --accent: #38aaff; --accent-ink: #04141f; }
+.coming-page.coming-wish { --accent: #72c9ff; --accent-ink: #06141f; }
+.coming-page.coming-relic { --accent: #ffc45c; --accent-ink: #1f1405; }
+.coming-page.coming-pixel { --accent: #ff71d1; --accent-ink: #21071a; }
 .game-page-header { max-width: 1360px; height: 78px; display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; margin: 0 auto; border-bottom: 1px solid #ffffff15; }
 .back-button { justify-self: start; display: inline-flex; align-items: center; gap: 10px; padding: 9px 0; border: 0; color: #e5e5e5; background: none; font: 10px var(--mono); letter-spacing: .08em; cursor: pointer; transition: color .2s; }
 .back-button:hover { color: var(--accent); }
