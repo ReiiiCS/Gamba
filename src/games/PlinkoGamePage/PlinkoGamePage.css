@@ -1,7 +1,7 @@
 .art-plinko {
   --art-a: #9dfc91;
   --art-b: #132c4b;
-  background: radial-gradient(ellipse at 68% 22%, #b8ff9a4d, transparent 24%), radial-gradient(ellipse at 26% 26%, #4dd3ff4a, transparent 30%), linear-gradient(135deg, #1e6545, #10213a 82%);
+  background: radial-gradient(ellipse at 52% 35%, #b8ff9a4d, transparent 24%), radial-gradient(ellipse at 26% 26%, #4dd3ff4a, transparent 30%), linear-gradient(135deg, #1e6545, #10213a 82%);
 }
 .art-plinko .card-art-symbol { color: var(--accent); text-shadow: 0 0 30px color-mix(in srgb, var(--accent) 60%, transparent), 0 6px 24px #0008; }
 

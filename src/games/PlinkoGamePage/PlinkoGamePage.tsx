@@ -4,7 +4,7 @@ import "./PlinkoGamePage.css";
 const plinkoChipValues = [10, 25, 50, 100];
 const plinkoRowOptions = [8, 12, 16] as const;
 const plinkoRiskOptions = ["low", "medium", "high"] as const;
-const startingBalance = 100000;
+const startingBalance = 1000;
 const ballStartX = 50;
 const ballStartY = 4;
 const slotY = 84;
@@ -21,7 +21,7 @@ const ballRadiusPx = 4; // 8px ball incl. 1px border
 const pegRadiusPx = 3.5; // 7px peg incl. 1px border
 const defaultCollisionGapPct = ((ballRadiusPx + pegRadiusPx) / 420) * 100;
 
-type Risk = typeof plinkoRiskOptions[number];
+type Risk = (typeof plinkoRiskOptions)[number];
 type Pt = { x: number; y: number };
 
 type DropRecord = {
@@ -69,7 +69,7 @@ const plinkoMultipliers: Record<Risk, Record<number, readonly number[]>> = {
 
 function binomial(n: number, k: number): number {
   let value = 1;
-  for (let index = 0; index < k; index += 1) value = value * (n - index) / (index + 1);
+  for (let index = 0; index < k; index += 1) value = (value * (n - index)) / (index + 1);
   return value;
 }
 
@@ -91,8 +91,9 @@ function formatMultiplier(multiplier: number): string {
 function choosePath(rows: number): boolean[] {
   const bytes = new Uint8Array(Math.ceil(rows / 8));
   window.crypto.getRandomValues(bytes);
-  return Array.from({ length: rows }, (_, index) =>
-    ((bytes[Math.floor(index / 8)] >> (index % 8)) & 1) === 1,
+  return Array.from(
+    { length: rows },
+    (_, index) => ((bytes[Math.floor(index / 8)] >> (index % 8)) & 1) === 1,
   );
 }
 
@@ -134,11 +135,16 @@ function playTone(
 }
 
 function playLandingChime(context: AudioContext, multiplier: number) {
-  const note = multiplier >= 100 ? 1046.5
-    : multiplier >= 10 ? 784
-    : multiplier >= 2 ? 659.3
-    : multiplier >= 1 ? 392
-    : 311;
+  const note =
+    multiplier >= 100
+      ? 1046.5
+      : multiplier >= 10
+        ? 784
+        : multiplier >= 2
+          ? 659.3
+          : multiplier >= 1
+            ? 392
+            : 311;
   const startAt = context.currentTime + 0.03;
   [note, note * 1.2, note * 1.5].forEach((frequency, index) => {
     playTone(context, frequency, startAt + index * 0.07, 0.55, 0.045, "sine");
@@ -209,6 +215,10 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
       drop();
     }, 50);
     return () => window.clearInterval(interval);
+    // `drop` and `bet` are intentionally captured at toggle time: `drop` is
+    // recreated every render (adding it would reset the interval each render),
+    // and bet/rows/risk controls are disabled while auto-drop is active.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoDropping]);
 
   // Convert the ball/peg contact distance (px) into board-% against the board's
@@ -428,14 +438,20 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
           <span aria-hidden="true">←</span> ALL GAMES
         </button>
         <span className="game-page-brand">PLAYROOM</span>
-        <span className="game-page-badge"><span className="live-dot" /> FREE PLAY</span>
+        <span className="game-page-badge">
+          <span className="live-dot" /> FREE PLAY
+        </span>
       </header>
 
       <section className="plinko-content" aria-labelledby="plinko-title">
         <div className="game-page-heading">
-          <div className="modal-topline"><span className="live-dot" /> PEG DROP · VIRTUAL CHIPS ONLY</div>
+          <div className="modal-topline">
+            <span className="live-dot" /> PEG DROP · VIRTUAL CHIPS ONLY
+          </div>
           <h1 id="plinko-title">GOLD DROP</h1>
-          <p className="modal-intro">Drop a ball, catch a multiplier. Every bounce is pure chance.</p>
+          <p className="modal-intro">
+            Drop a ball, catch a multiplier. Every bounce is pure chance.
+          </p>
         </div>
 
         <div className="plinko-layout">
@@ -446,7 +462,8 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
               aria-pressed={soundEnabled}
               type="button"
             >
-              <span aria-hidden="true">{soundEnabled ? "♪" : "×"}</span> SOUND {soundEnabled ? "ON" : "OFF"}
+              <span aria-hidden="true">{soundEnabled ? "♪" : "×"}</span> SOUND{" "}
+              {soundEnabled ? "ON" : "OFF"}
             </button>
 
             <div className={`plinko-board plinko-board-r${rows}`} ref={boardRef} aria-hidden="true">
@@ -507,7 +524,9 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
             </div>
             <div className="plinko-bet-summary">
               <span>{bet}-CHIP DROP</span>
-              <strong>{rows} ROWS · {risk.toUpperCase()} RISK</strong>
+              <strong>
+                {rows} ROWS · {risk.toUpperCase()} RISK
+              </strong>
             </div>
             <div className="plinko-drop-actions">
               <button
@@ -602,7 +621,10 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
               </div>
             </div>
 
-            <section className="plinko-legend" aria-label="Multiplier odds for the current settings">
+            <section
+              className="plinko-legend"
+              aria-label="Multiplier odds for the current settings"
+            >
               <div className="plinko-legend-heading">
                 <span className="odds-heading">SLOT MULTIPLIERS · {rows} ROWS</span>
                 <span className="plinko-rtp-badge">~{rtp.toFixed(1)}% RTP</span>
@@ -614,12 +636,17 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
                     key={k}
                     title={`${formatMultiplier(multiplier)} · ${(slotProbability(rows, k) * 100).toFixed(2)}% chance`}
                   >
-                    <i style={{ height: `${slotProbability(rows, k) / maxProbability * 100}%` }} />
+                    <i
+                      style={{ height: `${(slotProbability(rows, k) / maxProbability) * 100}%` }}
+                    />
                     <b>{formatMultiplier(multiplier)}</b>
                   </span>
                 ))}
               </div>
-              <p className="plinko-legend-note">Bar height = how often each slot is reached. Edge slots pay the most because they are rare.</p>
+              <p className="plinko-legend-note">
+                Bar height = how often each slot is reached. Edge slots pay the most because they
+                are rare.
+              </p>
             </section>
 
             <section className="plinko-stats" aria-label="Your game stats">
@@ -639,8 +666,12 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
 
             <section className="plinko-history" aria-labelledby="plinko-history-title">
               <div className="plinko-panel-heading">
-                <span className="odds-heading" id="plinko-history-title">DROP HISTORY</span>
-                {history.length > 0 && <span className="plinko-history-count">{history.length} TOTAL</span>}
+                <span className="odds-heading" id="plinko-history-title">
+                  DROP HISTORY
+                </span>
+                {history.length > 0 && (
+                  <span className="plinko-history-count">{history.length} TOTAL</span>
+                )}
               </div>
               {history.length === 0 ? (
                 <p className="plinko-empty-history">Your drops will show up here.</p>
@@ -651,8 +682,13 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
                       <span className={`plinko-history-mult ${multiplierClass(drop.multiplier)}`}>
                         {formatMultiplier(drop.multiplier)}
                       </span>
-                      <span className={drop.net >= 0 ? "plinko-history-win" : "plinko-history-loss"}>
-                        {drop.net >= 0 ? `+${drop.net.toLocaleString()}` : `−${Math.abs(drop.net).toLocaleString()}`} chips
+                      <span
+                        className={drop.net >= 0 ? "plinko-history-win" : "plinko-history-loss"}
+                      >
+                        {drop.net >= 0
+                          ? `+${drop.net.toLocaleString()}`
+                          : `−${Math.abs(drop.net).toLocaleString()}`}{" "}
+                        chips
                       </span>
                     </li>
                   ))}
@@ -664,22 +700,27 @@ export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
               <span className="odds-heading">THE MATH, TRANSPARENTLY</span>
               <p>
                 Each ball flips <strong>{rows} fair coins</strong> on the way down, so there are{" "}
-                <strong>2<sup>{rows}</sup> = {(Math.pow(2, rows)).toLocaleString()} equally likely paths</strong>.
-                The slot you reach follows a binomial distribution: the middle slot is far more likely than
-                the edges. At {rows} rows the exact middle lands{" "}
-                <strong>{(slotProbability(rows, Math.floor(rows / 2)) * 100).toFixed(2)}%</strong> of the time,
-                while an extreme edge is <strong>{(slotProbability(rows, 0) * 100).toFixed(2)}%</strong>.
+                <strong>
+                  2<sup>{rows}</sup> = {Math.pow(2, rows).toLocaleString()} equally likely paths
+                </strong>
+                . The slot you reach follows a binomial distribution: the middle slot is far more
+                likely than the edges. At {rows} rows the exact middle lands{" "}
+                <strong>{(slotProbability(rows, Math.floor(rows / 2)) * 100).toFixed(2)}%</strong>{" "}
+                of the time, while an extreme edge is{" "}
+                <strong>{(slotProbability(rows, 0) * 100).toFixed(2)}%</strong>.
               </p>
               <p className="plinko-edge">
                 Theoretical return: <strong>{rtp.toFixed(1)}%</strong> · house edge{" "}
-                <strong>{((1 - rtp) * 100).toFixed(1)}%</strong> · at a {bet}-chip drop, that is an average
-                expected loss of <strong>{(bet * (1 - rtp)).toFixed(1)} chips</strong>. Payouts include your
-                original stake: a 100-chip drop in a 2× slot returns 200 chips.
+                <strong>{((1 - rtp) * 100).toFixed(1)}%</strong> · at a {bet}-chip drop, that is an
+                average expected loss of <strong>{(bet * (1 - rtp)).toFixed(1)} chips</strong>.
+                Payouts include your original stake: a 100-chip drop in a 2× slot returns 200 chips.
               </p>
             </section>
           </aside>
         </div>
-        <p className="game-page-footnote">ALL CHIPS ARE VIRTUAL · NO MONEY · NO PRIZES · JUST FOR FUN</p>
+        <p className="game-page-footnote">
+          ALL CHIPS ARE VIRTUAL · NO MONEY · NO PRIZES · JUST FOR FUN
+        </p>
       </section>
     </main>
   );

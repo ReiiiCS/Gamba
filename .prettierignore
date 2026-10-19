@@ -1,0 +1,5 @@
+dist
+node_modules
+package-lock.json
+# Stylesheets are hand-maintained in a compact one-rule-per-line style.
+*.css

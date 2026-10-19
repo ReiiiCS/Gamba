@@ -44,7 +44,7 @@ function playCaseSounds(context: AudioContext, rarity: string) {
   const startAt = context.currentTime + 0.03;
   for (let index = 1; index <= 10; index += 1) {
     const progress = index / 10;
-    const time = startAt + caseRollDuration / 1000 * (1 - Math.sqrt(1 - progress));
+    const time = startAt + (caseRollDuration / 1000) * (1 - Math.sqrt(1 - progress));
     playTone(context, 1350 - index * 48, time, 0.04, 0.075, "triangle");
   }
 
@@ -121,11 +121,15 @@ export default function CaseGamePage({ onClose }: { onClose: () => void }) {
           <span aria-hidden="true">←</span> ALL GAMES
         </button>
         <span className="game-page-brand">PLAYROOM</span>
-        <span className="game-page-badge"><span className="live-dot" /> FREE PLAY</span>
+        <span className="game-page-badge">
+          <span className="live-dot" /> FREE PLAY
+        </span>
       </header>
       <section className="case-game-content" aria-labelledby="case-title">
         <div className="game-page-heading">
-          <div className="modal-topline"><span className="live-dot" /> CASE OPENING · NO PURCHASES</div>
+          <div className="modal-topline">
+            <span className="live-dot" /> CASE OPENING · NO PURCHASES
+          </div>
           <h1 id="case-title">NEON VAULT</h1>
           <p className="modal-intro">A little mystery. A lot of possibility.</p>
         </div>
@@ -137,21 +141,23 @@ export default function CaseGamePage({ onClose }: { onClose: () => void }) {
             aria-pressed={soundEnabled}
             type="button"
           >
-            <span aria-hidden="true">{soundEnabled ? "♪" : "×"}</span> SOUND {soundEnabled ? "ON" : "OFF"}
+            <span aria-hidden="true">{soundEnabled ? "♪" : "×"}</span> SOUND{" "}
+            {soundEnabled ? "ON" : "OFF"}
           </button>
           {phase === "ready" && (
             <>
               <span className="vault-halo" />
-              <span className="vault-symbol" aria-hidden="true">✳</span>
+              <span className="vault-symbol" aria-hidden="true">
+                ✳
+              </span>
               <span className="stage-caption">YOUR NEXT FAVORITE THING?</span>
             </>
           )}
           {phase === "rolling" && (
             <>
               <div className="rolling-items" aria-label="Opening case">
-                {Array.from(
-                  { length: 15 },
-                  (_, index) => index === 10 && prize ? prize : items[(index * 3 + 1) % items.length],
+                {Array.from({ length: 15 }, (_, index) =>
+                  index === 10 && prize ? prize : items[(index * 3 + 1) % items.length],
                 ).map((item, index) => (
                   <span
                     className="rolling-item"
@@ -166,8 +172,13 @@ export default function CaseGamePage({ onClose }: { onClose: () => void }) {
             </>
           )}
           {phase === "revealed" && prize && (
-            <div className="prize-reveal" style={{ "--prize-color": prize.color } as React.CSSProperties}>
-              <span className="prize-symbol" aria-hidden="true">{prize.symbol}</span>
+            <div
+              className="prize-reveal"
+              style={{ "--prize-color": prize.color } as React.CSSProperties}
+            >
+              <span className="prize-symbol" aria-hidden="true">
+                {prize.symbol}
+              </span>
               <span className="prize-rarity">{prize.rarity} drop</span>
               <span className="prize-name">{prize.name}</span>
             </div>
@@ -185,11 +196,14 @@ export default function CaseGamePage({ onClose }: { onClose: () => void }) {
 
         {phase === "revealed" && prize ? (
           <p className="reveal-message" role="status">
-            You found <strong style={{ color: prize.color }}>{prize.name}</strong>. Just for fun—nothing to buy or cash out.
+            You found <strong style={{ color: prize.color }}>{prize.name}</strong>. Just for
+            fun—nothing to buy or cash out.
           </p>
         ) : (
           <p className="reveal-message">
-            {phase === "rolling" ? "The universe is deciding..." : "Every drop is virtual. No money, no prizes."}
+            {phase === "rolling"
+              ? "The universe is deciding..."
+              : "Every drop is virtual. No money, no prizes."}
           </p>
         )}
 
@@ -205,7 +219,9 @@ export default function CaseGamePage({ onClose }: { onClose: () => void }) {
           </div>
         </div>
       </section>
-      <p className="game-page-footnote">ALL ITEMS ARE VIRTUAL · NO MONEY · NO PRIZES · JUST FOR FUN</p>
+      <p className="game-page-footnote">
+        ALL ITEMS ARE VIRTUAL · NO MONEY · NO PRIZES · JUST FOR FUN
+      </p>
     </main>
   );
 }
