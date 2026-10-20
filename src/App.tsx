@@ -3,6 +3,7 @@ import CaseGamePage from "./games/CaseGamePage/CaseGamePage";
 import RouletteGamePage from "./games/RouletteGamePage/RouletteGamePage";
 import SlotGamePage from "./games/SlotGamePage/SlotGamePage";
 import PlinkoGamePage from "./games/PlinkoGamePage/PlinkoGamePage";
+import MinesGamePage from "./games/MinesGamePage/MinesGamePage";
 
 type Game = {
   title: string;
@@ -15,6 +16,7 @@ type Game = {
   roulette?: boolean;
   slots?: boolean;
   plinko?: boolean;
+  mines?: boolean;
 };
 
 const games: Game[] = [
@@ -56,6 +58,16 @@ const games: Game[] = [
     tag: "PLAY NOW",
     playable: true,
     plinko: true,
+  },
+  {
+    title: "Neon mines",
+    category: "GRID RISK",
+    description: "Pick gems. Dodge mines. Cash out smartly.",
+    style: "mines",
+    symbol: "◆",
+    tag: "PLAY NOW",
+    playable: true,
+    mines: true,
   },
   {
     title: "Wishbound",
@@ -170,6 +182,7 @@ function App() {
     if (selectedGame.roulette) return <RouletteGamePage onClose={onClose} />;
     if (selectedGame.slots) return <SlotGamePage onClose={onClose} />;
     if (selectedGame.plinko) return <PlinkoGamePage onClose={onClose} />;
+    if (selectedGame.mines) return <MinesGamePage onClose={onClose} />;
     return selectedGame.playable ? (
       <CaseGamePage onClose={onClose} />
     ) : (
@@ -249,7 +262,7 @@ function App() {
             </h2>
           </div>
           <span className="game-count">
-            03 LIVE GAMES <i /> 03 IN THE WORKS
+            05 LIVE GAMES <i /> 03 IN THE WORKS
           </span>
         </div>
         <div className="game-grid">
