@@ -291,7 +291,7 @@ export default function RouletteGamePage({ onClose }: { onClose: () => void }) {
           <div className="modal-topline">
             <span className="live-dot" /> EUROPEAN ROULETTE · NO PURCHASES
           </div>
-          <h1 id="roulette-title">LUCKY WHEEL</h1>
+          <h1 id="roulette-title">ROULETTE WHEEL</h1>
           <p className="modal-intro">
             Pick a number, choose a color, and see where the wheel lands.
           </p>

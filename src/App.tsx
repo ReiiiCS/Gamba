@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import CaseGamePage from "./games/CaseGamePage/CaseGamePage";
 import RouletteGamePage from "./games/RouletteGamePage/RouletteGamePage";
+import LuckyWheelGamePage from "./games/LuckyWheelGamePage/LuckyWheelGamePage";
 import SlotGamePage from "./games/SlotGamePage/SlotGamePage";
 import PlinkoGamePage from "./games/PlinkoGamePage/PlinkoGamePage";
 import MinesGamePage from "./games/MinesGamePage/MinesGamePage";
@@ -14,6 +15,7 @@ type Game = {
   tag?: string;
   playable?: boolean;
   roulette?: boolean;
+  luckyWheel?: boolean;
   slots?: boolean;
   plinko?: boolean;
   mines?: boolean;
@@ -30,7 +32,7 @@ const games: Game[] = [
     playable: true,
   },
   {
-    title: "Lucky wheel",
+    title: "Roulette Wheel",
     category: "ROULETTE TABLE",
     description: "Call your number. Pick your color.",
     style: "roulette",
@@ -38,6 +40,16 @@ const games: Game[] = [
     tag: "PLAY NOW",
     playable: true,
     roulette: true,
+  },
+  {
+    title: "Lucky Wheel",
+    category: "PRIZE WHEEL",
+    description: "Twelve slots. One spin. Pure chance.",
+    style: "luckywheel",
+    symbol: "✳",
+    tag: "PLAY NOW",
+    playable: true,
+    luckyWheel: true,
   },
   {
     title: "Lucky reels",
@@ -180,6 +192,7 @@ function App() {
   if (selectedGame) {
     const onClose = () => setSelectedGame(null);
     if (selectedGame.roulette) return <RouletteGamePage onClose={onClose} />;
+    if (selectedGame.luckyWheel) return <LuckyWheelGamePage onClose={onClose} />;
     if (selectedGame.slots) return <SlotGamePage onClose={onClose} />;
     if (selectedGame.plinko) return <PlinkoGamePage onClose={onClose} />;
     if (selectedGame.mines) return <MinesGamePage onClose={onClose} />;
@@ -262,7 +275,7 @@ function App() {
             </h2>
           </div>
           <span className="game-count">
-            05 LIVE GAMES <i /> 03 IN THE WORKS
+            06 LIVE GAMES <i /> 03 IN THE WORKS
           </span>
         </div>
         <div className="game-grid">

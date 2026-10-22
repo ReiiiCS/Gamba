@@ -78,6 +78,8 @@ h1 em, .section-heading h2 em, .manifesto h2 em { color: var(--accent); font-sty
 .game-count { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; color: #808080; font: 9px var(--mono); letter-spacing: .07em; }
 .game-count i { width: 3px; height: 3px; margin: 0 2px; border-radius: 50%; background: #666; }
 .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+/* An odd number of cards would leave a hole in the grid, so the last one spans the full width. */
+.game-grid > .game-card:last-child:nth-child(odd) { grid-column: 1 / -1; aspect-ratio: 4.4; }
 .game-card { position: relative; display: block; isolation: isolate; width: 100%; min-width: 0; aspect-ratio: 2.2; overflow: hidden; padding: 20px; text-align: left; border: 1px solid #d3a64a; border-radius: 2px; background: #1f1f1f; cursor: pointer; transition: transform .25s, border-color .25s, box-shadow .25s; }
 .game-card:hover { z-index: 1; transform: translateY(-5px); border-color: #ffe49a; box-shadow: 0 0 0 1px #d3a64a, 0 0 18px #d3a64a55; }
 .art-vault { --art-a: #e50914; --art-b: #4a0206; background: linear-gradient(90deg, #141414f5 0%, #141414d9 32%, transparent 68%), radial-gradient(ellipse at 78% 26%, #ff8a5c40, transparent 28%), radial-gradient(ellipse at 32% 30%, #e5091480, transparent 34%), linear-gradient(135deg, #7a0710, #1a1a1a 75%); }
@@ -88,7 +90,8 @@ h1 em, .section-heading h2 em, .manifesto h2 em { color: var(--accent); font-sty
 .game-card.art-slots { --art-a: #df39f2; --art-b: #24094f; background-color: #24094f; background-image: url("/images/casino-games-banner-collection.png"); background-size: auto 300%; background-position: 68% 50%; background-repeat: no-repeat; }
 .game-card.art-plinko { --art-a: #38aaff; --art-b: #063b78; background-color: #063b78; background-image: url("/images/casino-games-banner-collection.png"); background-size: auto 300%; background-position: 59% 100%; background-repeat: no-repeat; }
 .game-card.art-mines { --art-a: #38aaff; --art-b: #04141f; background: radial-gradient(ellipse at 76% 24%, #38aaff55, transparent 24%), radial-gradient(ellipse at 32% 28%, #4bd9a555, transparent 28%), linear-gradient(135deg, #0b1f33, #101820 78%); }
-.game-card.art-roulette .card-art-symbol, .game-card.art-slots .card-art-symbol, .game-card.art-plinko .card-art-symbol { display: none; }
+.game-card.art-luckywheel { --art-a: #ff9f1c; --art-b: #3a1a05; background: conic-gradient(from -15deg at 78% 48%, #e5484d 0deg 30deg, #f5a524 30deg 60deg, #2f9e44 60deg 90deg, #1c7ed6 90deg 120deg, #7048e8 120deg 150deg, #d6336c 150deg 180deg, #e5484d 180deg 210deg, #f5a524 210deg 240deg, #2f9e44 240deg 270deg, #1c7ed6 270deg 300deg, #7048e8 300deg 330deg, #d6336c 330deg 360deg), #17120c; }
+.game-card.art-roulette .card-art-symbol, .game-card.art-slots .card-art-symbol, .game-card.art-plinko .card-art-symbol, .game-card.art-luckywheel .card-art-symbol { display: none; }
 .card-art-symbol { position: absolute; top: 50%; right: 7%; font: 120px/1 var(--display); color: #ffffff8c; text-shadow: 0 0 35px #fff7, 0 8px 24px #0008; transform: translateY(-50%) rotate(8deg); transition: transform .3s; }
 .art-slots .card-art-symbol { top: 50%; right: 6%; font-size: clamp(58px, 6vw, 80px); letter-spacing: -.12em; color: #ffe08a; text-shadow: 0 0 25px #ffb347b0, 0 5px 16px #0009; transform: translateY(-50%) rotate(-5deg); }
 .game-card:hover .card-art-symbol { transform: translateY(-50%) rotate(0) scale(1.06); }

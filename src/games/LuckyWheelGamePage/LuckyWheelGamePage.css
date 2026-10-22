@@ -1,0 +1,91 @@
+.lucky-wheel-page { --accent: #ff9f1c; --accent-ink: #1b1005; }
+.lucky-wheel-content { width: min(100%, 1120px); margin: 0 auto; padding: 38px 0 0; }
+.lucky-wheel-content .game-page-heading { margin-bottom: 25px; text-align: center; }
+.lucky-wheel-content .game-page-heading h1 { font-size: clamp(30px, 4vw, 42px); }
+.lucky-wheel-layout { display: grid; grid-template-columns: minmax(280px, .9fr) minmax(0, 1.35fr); gap: 17px; align-items: start; }
+
+.lucky-wheel-panel { position: relative; display: flex; flex-direction: column; align-items: center; padding: 23px 20px 18px; border: 1px solid #ffffff18; background: linear-gradient(155deg, #1f1f1f, #141414 76%); text-align: center; }
+.lucky-wheel-sound-toggle { position: absolute; z-index: 3; top: 14px; right: 14px; display: inline-flex; align-items: center; gap: 6px; padding: 8px 9px; border: 1px solid #ffffff20; color: #e5e5e5; background: #141414cc; font: 9px var(--mono); letter-spacing: .05em; cursor: pointer; transition: color .2s, border-color .2s; }
+.lucky-wheel-sound-toggle:hover, .lucky-wheel-sound-toggle[aria-pressed="false"] { color: #b3b3b3; border-color: #ffffff35; }
+.lucky-wheel-sound-toggle span { color: var(--accent); font-size: 13px; }
+
+.lucky-wheel-stage { position: relative; width: min(100%, 380px); aspect-ratio: 1; margin: 6px auto 4px; }
+.lucky-wheel-svg { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 16px 34px #0009); }
+.lucky-wheel-rim { fill: none; stroke: #2b2b2b; stroke-width: 12; }
+.lucky-wheel-rim-inner { fill: none; stroke: var(--accent); stroke-width: 2; opacity: .85; }
+.lucky-wheel-segment { transition: filter .35s ease, opacity .35s ease; }
+.lucky-wheel-segment.is-winner { filter: url(#lucky-wheel-glow); }
+.lucky-wheel-segment-prize { fill: #ffffff; font: 700 17px var(--display); letter-spacing: .02em; paint-order: stroke; stroke: #00000066; stroke-width: 2.5px; }
+.lucky-wheel-segment-chance { fill: #ffffffb0; font: 7px var(--mono); letter-spacing: .06em; paint-order: stroke; stroke: #00000055; stroke-width: 2px; }
+.lucky-wheel-hub circle { fill: #141414; stroke: var(--accent); stroke-width: 2; }
+.lucky-wheel-hub-value { fill: #ffffff; font: 700 20px var(--display); }
+.lucky-wheel-hub-label { fill: #8d8d8d; font: 6px var(--mono); letter-spacing: .14em; }
+.lucky-wheel-pointer path { fill: var(--accent); stroke: #141414; stroke-width: 2; filter: drop-shadow(0 3px 6px #000a); }
+.lucky-wheel-confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+.lucky-wheel-balance, .lucky-wheel-stake { width: 100%; display: flex; justify-content: space-between; align-items: baseline; margin-top: 17px; color: #99938b; font: 8px var(--mono); letter-spacing: .06em; }
+.lucky-wheel-balance strong { color: var(--accent); font: 700 18px var(--display); letter-spacing: 0; }
+.lucky-wheel-stake { padding-top: 11px; margin-top: 9px; border-top: 1px solid #ffffff14; }
+.lucky-wheel-stake strong { color: #e6dfd4; font: 10px var(--mono); }
+.lucky-wheel-spin-button { position: relative; width: 100%; margin-top: 17px; padding: 14px 35px 14px 14px; }
+.lucky-wheel-spin-button > span { position: absolute; right: 13px; }
+.lucky-wheel-spin-button:disabled { opacity: .55; cursor: not-allowed; }
+.lucky-wheel-status { min-height: 34px; margin: 12px 0 0; color: #aaa49e; font-size: 10px; line-height: 1.6; }
+.lucky-wheel-status.is-error { color: #ff8181; }
+.lucky-wheel-reset-button { margin-top: 8px; padding: 7px 10px; border: 1px solid #ffffff26; border-radius: 2px; color: #cfc8bd; background: transparent; font: 8px var(--mono); letter-spacing: .08em; cursor: pointer; transition: border-color .2s, color .2s; }
+.lucky-wheel-reset-button:hover { border-color: var(--accent); color: var(--accent); }
+
+.lucky-wheel-side { display: flex; flex-direction: column; gap: 17px; min-width: 0; }
+.lucky-wheel-prizes, .lucky-wheel-math, .lucky-wheel-history { padding: 20px; border: 1px solid #ffffff18; background: linear-gradient(145deg, #1f1f1f, #141414); }
+.lucky-wheel-side-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.lucky-wheel-free-note, .lucky-wheel-history-count { color: var(--accent); font: 7px var(--mono); letter-spacing: .08em; }
+.lucky-wheel-prizes ul { margin: 14px 0 0; padding: 0; list-style: none; }
+.lucky-wheel-prizes li { display: grid; grid-template-columns: 9px 42px minmax(40px, 1fr) 34px 68px; align-items: center; gap: 10px; padding: 7px 4px; border-top: 1px solid #ffffff10; color: #aaa49e; font: 8px var(--mono); }
+.lucky-wheel-prizes li.is-winner { border-radius: 2px; background: color-mix(in srgb, var(--accent) 14%, transparent); }
+.lucky-wheel-prizes li i { width: 9px; height: 9px; border-radius: 2px; }
+.lucky-wheel-prize-name { color: #ffffff; font: 700 12px var(--display); }
+.lucky-wheel-prize-bar { height: 5px; overflow: hidden; border-radius: 3px; background: #ffffff12; }
+.lucky-wheel-prize-bar b { display: block; height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), #ffd08a); }
+.lucky-wheel-prize-chance { color: #cfc8bd; text-align: right; }
+.lucky-wheel-prize-chips { color: #8d8d8d; text-align: right; }
+
+.lucky-wheel-math p { margin: 9px 0 0; color: #a9a39b; font-size: 9px; line-height: 1.65; }
+.lucky-wheel-math strong { color: #e9e2d7; font-weight: 600; }
+.lucky-wheel-math .lucky-wheel-edge { padding-top: 9px; border-top: 1px solid #ffffff12; color: #c1baaf; }
+.lucky-wheel-math .lucky-wheel-edge strong { color: var(--accent); }
+
+.lucky-wheel-empty-history { margin: 14px 0 0; color: #8d8d8d; font-size: 9px; }
+.lucky-wheel-history ol { margin: 14px 0 0; padding: 0; list-style: none; }
+.lucky-wheel-history li { display: grid; grid-template-columns: 68px 1fr 54px; align-items: center; gap: 10px; padding: 8px 2px; border-top: 1px solid #ffffff10; font: 8px var(--mono); }
+.lucky-wheel-history-prize { color: #ffffff; font: 700 12px var(--display); }
+.lucky-wheel-history-chance { color: #8d8d8d; }
+.lucky-wheel-history-win { color: #6ee7a8; text-align: right; }
+.lucky-wheel-history-even { color: #cfc8bd; text-align: right; }
+.lucky-wheel-history-loss { color: #ff8181; text-align: right; }
+
+@media (max-width: 980px) {
+  .lucky-wheel-layout { grid-template-columns: minmax(0, 1fr); }
+  .lucky-wheel-stage { width: min(100%, 330px); }
+}
+
+@media (max-width: 600px) {
+  .lucky-wheel-content { padding-top: 25px; }
+  .lucky-wheel-content .game-page-heading { margin-bottom: 17px; }
+  .lucky-wheel-content .game-page-heading h1 { font-size: 29px; }
+  .lucky-wheel-content .game-page-heading .modal-intro { max-width: 300px; margin: 7px auto 0; line-height: 1.6; }
+  .lucky-wheel-panel { padding: 19px 12px 15px; }
+  .lucky-wheel-sound-toggle { top: 9px; right: 9px; gap: 4px; padding: 7px 6px; font-size: 7px; }
+  .lucky-wheel-sound-toggle span { font-size: 11px; }
+  .lucky-wheel-stage { width: min(100%, 280px); }
+  .lucky-wheel-balance, .lucky-wheel-stake { margin-top: 9px; font-size: 7px; }
+  .lucky-wheel-balance strong { font-size: 15px; }
+  .lucky-wheel-stake { padding-top: 8px; }
+  .lucky-wheel-spin-button { padding: 12px 25px 12px 8px; font-size: 8px; letter-spacing: .04em; }
+  .lucky-wheel-spin-button > span { right: 8px; }
+  .lucky-wheel-status { min-height: 44px; font-size: 9px; }
+  .lucky-wheel-prizes, .lucky-wheel-math, .lucky-wheel-history { padding: 14px 11px; }
+  .lucky-wheel-prizes li { grid-template-columns: 8px 34px minmax(30px, 1fr) 30px 58px; gap: 7px; font-size: 7px; }
+  .lucky-wheel-prize-name { font-size: 11px; }
+  .lucky-wheel-history li { grid-template-columns: 58px 1fr 44px; gap: 7px; font-size: 7px; }
+  .lucky-wheel-history-prize { font-size: 11px; }
+}
