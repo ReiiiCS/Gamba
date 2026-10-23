@@ -21,8 +21,10 @@ export type PrizeSegment = {
 
 export type PrizeConfig = {
   version: string;
-  /** Virtual chips a single spin costs. */
+  /** Virtual chips a single spin costs by default, and the stake chip prizes are quoted at. */
   stake: number;
+  /** Every stake a player can choose. The rewards scale with the stake. */
+  stakes: number[];
   segments: PrizeSegment[];
 };
 

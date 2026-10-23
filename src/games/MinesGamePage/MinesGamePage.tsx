@@ -292,7 +292,8 @@ export default function MinesGamePage({ onClose }: { onClose: () => void }) {
               aria-pressed={soundEnabled}
               type="button"
             >
-              <span aria-hidden="true">{soundEnabled ? "♪" : "×"}</span> SOUND {soundEnabled ? "ON" : "OFF"}
+              <span aria-hidden="true">{soundEnabled ? "♪" : "×"}</span> SOUND{" "}
+              {soundEnabled ? "ON" : "OFF"}
             </button>
 
             <div className="mines-balance-bar">
@@ -426,8 +427,8 @@ export default function MinesGamePage({ onClose }: { onClose: () => void }) {
               </div>
 
               <p className="mines-math">
-                {mineCount} mines on {gridSize} tiles. Hitting odds grow with each safe pick. Next gem
-                has roughly <strong>{hitChance.toFixed(1)}%</strong> chance to be a mine (edge
+                {mineCount} mines on {gridSize} tiles. Hitting odds grow with each safe pick. Next
+                gem has roughly <strong>{hitChance.toFixed(1)}%</strong> chance to be a mine (edge
                 cases vary). Multipliers are calculated to stay near a fun, transparent curve.
               </p>
             </section>
@@ -452,7 +453,9 @@ export default function MinesGamePage({ onClose }: { onClose: () => void }) {
                 <span className="odds-heading" id="mines-history-title">
                   ROUND HISTORY
                 </span>
-                {history.length > 0 && <span className="plinko-history-count">{history.length} TOTAL</span>}
+                {history.length > 0 && (
+                  <span className="plinko-history-count">{history.length} TOTAL</span>
+                )}
               </div>
               {history.length === 0 ? (
                 <p className="mines-empty-history">Your rounds will show up here.</p>

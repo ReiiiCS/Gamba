@@ -1,5 +1,6 @@
 import { cryptoRandomUnit, type RandomUnit } from "./random";
 import { activeSegments, prizeProbability, selectPrize, totalWeight } from "./selectPrize";
+import { payoutFor } from "./payouts";
 import { SpinStore, type WheelState } from "./store";
 import type { PrizeConfig, PrizeSegment, SpinRecord, SpinResult } from "./types";
 import { validatePrizeConfig, collectSpinRecordIssues } from "./validateConfig";
@@ -78,12 +79,27 @@ export class SpinService {
   /**
    * Selects and records a spin. The stake is debited here; the reward is paid
    * out by `settle()` once the animation finishes.
+   *
+   * The stake defaults to the configuration's default stake and must be one of
+   * the configured stakes. The balance must cover it: the service never lets a
+   * player spin on credit.
    */
-  spin(): SpinResult {
+  spin(stake: number = this.config.stake): SpinResult {
     const config = this.config;
 
     // 1 + 2: load the active configuration and reject invalid ones.
     validatePrizeConfig(config);
+
+    if (!config.stakes.includes(stake)) {
+      throw new Error(
+        `Lucky Wheel: stake must be one of ${config.stakes.join(", ")} chips (received ${stake})`,
+      );
+    }
+
+    const state = this.store.load();
+    if (state.balance < stake) {
+      throw new Error(`Lucky Wheel: not enough chips for a ${stake}-chip spin`);
+    }
 
     const active = activeSegments(config);
     const total = totalWeight(active);
@@ -94,8 +110,7 @@ export class SpinService {
     // 3 + 4: secure random draw, weighted selection.
     const segment = selectPrize(config.segments, this.randomUnit);
     const probability = segment.weight / total;
-    const stake = config.stake;
-    const payout = segment.type === "multiplier" ? stake * segment.prize : segment.prize;
+    const payout = payoutFor(segment, config, stake);
 
     const createdAt = this.now();
     const record: SpinRecord = {
@@ -117,7 +132,6 @@ export class SpinService {
     };
 
     // 5: persist the result together with the stake debit.
-    const state = this.store.load();
     this.store.save({
       balance: state.balance - stake,
       spins: [record, ...state.spins],

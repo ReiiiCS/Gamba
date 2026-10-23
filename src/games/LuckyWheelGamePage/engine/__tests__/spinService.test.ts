@@ -43,21 +43,86 @@ describe("SpinService", () => {
   it("applies the reward according to the prize type", () => {
     const config: PrizeConfig = {
       ...LUCKY_WHEEL_CONFIG,
-      stake: 20,
       segments: LUCKY_WHEEL_CONFIG.segments.map((segment) =>
         segment.id === "seg-01" ? { ...segment, prize: 3, type: "multiplier" as const } : segment,
       ),
     };
 
     const { service } = createService({ config, randomUnit: () => 0 });
-    const result = service.spin();
+    const result = service.spin(50);
 
     expect(result.record.prizeType).toBe("multiplier");
-    expect(result.record.payout).toBe(60);
-    expect(result.record.net).toBe(40);
+    expect(result.record.payout).toBe(150);
+    expect(result.record.net).toBe(100);
 
     service.settle(result.record.id);
-    expect(service.getBalance()).toBe(STARTING_BALANCE - 20 + 60);
+    expect(service.getBalance()).toBe(STARTING_BALANCE - 50 + 150);
+  });
+
+  it("scales the chips prize with the chosen stake", () => {
+    for (const stake of LUCKY_WHEEL_CONFIG.stakes) {
+      const { service } = createService({ randomUnit: () => 0 });
+      const result = service.spin(stake);
+
+      expect(result.record.stake).toBe(stake);
+      expect(result.record.payout).toBe((result.segment.prize / LUCKY_WHEEL_CONFIG.stake) * stake);
+      expect(service.getBalance()).toBe(STARTING_BALANCE - stake);
+    }
+  });
+
+  it("pays every segment a whole number of scaled chips at every stake", () => {
+    const segments = LUCKY_WHEEL_CONFIG.segments;
+    const totalWeight = segments.reduce((sum, candidate) => sum + candidate.weight, 0);
+
+    for (const stake of LUCKY_WHEEL_CONFIG.stakes) {
+      segments.forEach((segment, position) => {
+        // Aim the deterministic draw at the middle of this segment's slice.
+        const before = segments
+          .slice(0, position)
+          .reduce((sum, candidate) => sum + candidate.weight, 0);
+        const threshold = (before + segment.weight / 2) / totalWeight;
+
+        const { service } = createService({ randomUnit: () => threshold });
+        const result = service.spin(stake);
+
+        expect(result.segment.id).toBe(segment.id);
+        expect(Number.isInteger(result.record.payout)).toBe(true);
+        expect(result.record.payout).toBe((segment.prize / LUCKY_WHEEL_CONFIG.stake) * stake);
+      });
+    }
+  });
+
+  it("rejects a stake that is not offered", () => {
+    const { service } = createService();
+
+    expect(() => service.spin(20)).toThrow(/stake must be one of 10, 25, 50, 100 chips/);
+    expect(service.getBalance()).toBe(STARTING_BALANCE);
+    expect(service.getHistory()).toHaveLength(0);
+  });
+
+  it("rejects a stake the balance cannot cover", () => {
+    const storage = createMemoryStorage();
+    const store = new SpinStore(storage);
+    store.save({ balance: 20, spins: [] });
+
+    const service = new SpinService({ store });
+    expect(() => service.spin(25)).toThrow(/not enough chips for a 25-chip spin/);
+    expect(service.getBalance()).toBe(20);
+    expect(service.getHistory()).toHaveLength(0);
+  });
+
+  it("keeps the return to player constant across stakes", () => {
+    const expectedValue = (stake: number) =>
+      LUCKY_WHEEL_CONFIG.segments.reduce(
+        (sum, segment) =>
+          sum + (segment.weight / 100) * (segment.prize / LUCKY_WHEEL_CONFIG.stake) * stake,
+        0,
+      );
+
+    const baseline = expectedValue(LUCKY_WHEEL_CONFIG.stake) / LUCKY_WHEEL_CONFIG.stake;
+    for (const stake of LUCKY_WHEEL_CONFIG.stakes) {
+      expect(expectedValue(stake) / stake).toBeCloseTo(baseline, 10);
+    }
   });
 
   it("rejects an invalid configuration instead of spinning", () => {

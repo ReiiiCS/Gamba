@@ -1,4 +1,5 @@
 import { SEGMENT_COUNT } from "../geometry";
+import { prizeMultiplier } from "./payouts";
 import type { PrizeConfig, PrizeSegment, SpinRecord } from "./types";
 
 export class InvalidPrizeConfigError extends Error {
@@ -28,6 +29,28 @@ export function collectPrizeConfigIssues(config: PrizeConfig): string[] {
 
   if (!Number.isFinite(config.stake) || config.stake < 0) {
     issues.push(`stake must be a finite, non-negative number (received ${config.stake})`);
+  }
+
+  const validStakes: number[] = [];
+
+  if (!Array.isArray(config.stakes) || config.stakes.length === 0) {
+    issues.push("prize config must list at least one stake");
+  } else {
+    for (const stake of config.stakes) {
+      if (!Number.isFinite(stake) || !Number.isInteger(stake) || stake <= 0) {
+        issues.push(`stake ${stake} must be a positive whole number`);
+      } else if (validStakes.includes(stake)) {
+        issues.push(`duplicate stake ${stake}`);
+      } else {
+        validStakes.push(stake);
+      }
+    }
+
+    if (Number.isFinite(config.stake) && !validStakes.includes(config.stake)) {
+      issues.push(
+        `default stake ${config.stake} must be one of the available stakes (${validStakes.join(", ")})`,
+      );
+    }
   }
 
   const seenIds = new Set<string>();
@@ -75,6 +98,24 @@ export function collectPrizeConfigIssues(config: PrizeConfig): string[] {
       issues.push(`segment "${name}" must award a whole number of chips`);
     } else if (segment.type === "multiplier" && segment.prize < 1) {
       issues.push(`multiplier segment "${name}" must pay at least 1x`);
+    }
+
+    if (
+      validStakes.length > 0 &&
+      Number.isFinite(segment.prize) &&
+      segment.prize >= 0 &&
+      (segment.type === "chips" || segment.type === "multiplier")
+    ) {
+      const multiplier = prizeMultiplier(segment, config);
+      for (const stake of validStakes) {
+        const payout = multiplier * stake;
+        if (!Number.isInteger(payout) || payout < 0) {
+          issues.push(
+            `segment "${name}" would pay ${payout} chips at a ${stake}-chip stake; prizes must be whole chips at every stake`,
+          );
+          break;
+        }
+      }
     }
   }
 

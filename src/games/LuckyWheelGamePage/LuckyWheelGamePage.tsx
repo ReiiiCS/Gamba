@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "./LuckyWheelGamePage.css";
-import { LUCKY_WHEEL_CONFIG, RARITY_LABELS, RARE_PRIZE_THRESHOLD } from "./engine/prizeConfig";
+import { LUCKY_WHEEL_CONFIG, RARITY_LABELS, isRarePrize } from "./engine/prizeConfig";
 import { SpinService } from "./engine/spinService";
-import { STARTING_BALANCE } from "./engine/store";
+import { SpinStore, createMemoryStorage, STARTING_BALANCE } from "./engine/store";
+import { formatMultiplier, payoutFor, prizeMultiplier } from "./engine/payouts";
 import { activeSegments, prizeProbability, totalWeight } from "./engine/selectPrize";
 import type { SpinRecord, SpinResult } from "./engine/types";
 import {
@@ -34,11 +35,17 @@ function ArrowIcon() {
 }
 
 export default function LuckyWheelGamePage({ onClose }: { onClose: () => void }) {
-  const service = useMemo(() => new SpinService(), []);
+  // The chips live only in memory, exactly like the other games: every time the
+  // game is opened it starts with a fresh balance and an empty history.
+  const service = useMemo(
+    () => new SpinService({ store: new SpinStore(createMemoryStorage()) }),
+    [],
+  );
   const segments = LUCKY_WHEEL_CONFIG.segments;
   const active = useMemo(() => activeSegments(LUCKY_WHEEL_CONFIG), []);
-  const stake = LUCKY_WHEEL_CONFIG.stake;
+  const stakes = LUCKY_WHEEL_CONFIG.stakes;
 
+  const [stake, setStake] = useState(LUCKY_WHEEL_CONFIG.stake);
   const [balance, setBalance] = useState(() => service.getBalance());
   const [history, setHistory] = useState<SpinRecord[]>(() => service.getHistory(8));
   const [phase, setPhase] = useState<Phase>("ready");
@@ -66,12 +73,16 @@ export default function LuckyWheelGamePage({ onClose }: { onClose: () => void })
         (sum, segment) =>
           sum +
           prizeProbability(segment, LUCKY_WHEEL_CONFIG) *
-            (segment.type === "multiplier" ? stake * segment.prize : segment.prize),
+            payoutFor(segment, LUCKY_WHEEL_CONFIG, stake),
         0,
       ),
     [active, stake],
   );
   const returnToPlayer = stake > 0 ? expectedPrize / stake : 0;
+  const bestPayout = useMemo(
+    () => Math.max(...active.map((segment) => payoutFor(segment, LUCKY_WHEEL_CONFIG, stake))),
+    [active, stake],
+  );
 
   useEffect(() => {
     closeButton.current?.focus();
@@ -89,15 +100,8 @@ export default function LuckyWheelGamePage({ onClose }: { onClose: () => void })
     };
   }, [onClose]);
 
-  // A spin that was selected but never paid out (the page was closed mid-spin)
-  // is settled when the game is opened again.
-  useEffect(() => {
-    const settled = service.settlePending();
-    if (settled.length > 0) {
-      setBalance(service.getBalance());
-      setHistory(service.getHistory(8));
-    }
-  }, [service]);
+  // The chips are kept in memory only, so there is no stored spin to recover
+  // when the game opens: every session starts with a fresh balance.
 
   const applyRotation = useCallback((value: number) => {
     rotationRef.current = value;
@@ -134,10 +138,10 @@ export default function LuckyWheelGamePage({ onClose }: { onClose: () => void })
 
       const context = audioContext.current;
       if (context && soundEnabled) {
-        playWinChime(context, outcome.segment.prize);
-        if (outcome.segment.prize >= RARE_PRIZE_THRESHOLD) playRareFanfare(context);
+        playWinChime(context, outcome.record.payout);
+        if (isRarePrize(outcome.segment)) playRareFanfare(context);
       }
-      if (!reducedMotion && outcome.segment.prize >= RARE_PRIZE_THRESHOLD) {
+      if (!reducedMotion && isRarePrize(outcome.segment)) {
         launchConfetti(outcome.segment.color);
       }
     },
@@ -190,7 +194,7 @@ export default function LuckyWheelGamePage({ onClose }: { onClose: () => void })
     // The service decides the prize and records it before the wheel moves.
     let outcome: SpinResult;
     try {
-      outcome = service.spin();
+      outcome = service.spin(stake);
     } catch (cause) {
       setError(
         cause instanceof Error
@@ -227,22 +231,32 @@ export default function LuckyWheelGamePage({ onClose }: { onClose: () => void })
     setPhase("ready");
   }
 
+  function changeStake(value: number) {
+    if (phase === "spinning" || value === stake) return;
+    // A new stake starts a fresh round: the previous result is cleared so the
+    // rescaled wheel face and the hub always agree.
+    setStake(value);
+    setResult(null);
+    setPhase("ready");
+    setError(null);
+  }
+
   const winningSegmentId = result?.segment.id ?? null;
   const net = result?.record.net ?? 0;
   const statusText = (() => {
     if (error) return error;
     if (phase === "spinning") return "The wheel is in motion...";
     if (!result) return `Each spin costs ${stake} chips. Twelve slots, one winner.`;
-    if (result.segment.prize === 0) {
+    if (result.record.payout === 0) {
       return `Slot ${result.segment.index + 1} paid 0 chips. Net −${stake} chips on this spin.`;
     }
     if (net > 0) {
-      return `Slot ${result.segment.index + 1} paid ${result.segment.prize} chips. Net +${net} chips.`;
+      return `Slot ${result.segment.index + 1} paid ${result.record.payout} chips. Net +${net} chips.`;
     }
     if (net === 0) {
-      return `Slot ${result.segment.index + 1} paid ${result.segment.prize} chips. Even spin — the stake came straight back.`;
+      return `Slot ${result.segment.index + 1} paid ${result.record.payout} chips. Even spin — the stake came straight back.`;
     }
-    return `Slot ${result.segment.index + 1} paid ${result.segment.prize} chips. Net −${Math.abs(net)} chips.`;
+    return `Slot ${result.segment.index + 1} paid ${result.record.payout} chips. Net −${Math.abs(net)} chips.`;
   })();
 
   return (
@@ -264,8 +278,8 @@ export default function LuckyWheelGamePage({ onClose }: { onClose: () => void })
           </div>
           <h1 id="lucky-wheel-title">LUCKY WHEEL</h1>
           <p className="modal-intro">
-            Twelve slots, one spin. The wheel decides nothing — the prize is locked in before it
-            moves.
+            Twelve slots, four stakes, one spin. The wheel decides nothing — the prize is locked in
+            before it moves.
           </p>
         </div>
 
@@ -288,7 +302,7 @@ export default function LuckyWheelGamePage({ onClose }: { onClose: () => void })
                 role="img"
                 aria-label={
                   result
-                    ? `Lucky wheel. The pointer is on slot ${result.segment.index + 1}, which pays ${result.segment.prize} chips.`
+                    ? `Lucky wheel. The pointer is on slot ${result.segment.index + 1}, which pays ${result.record.payout} chips.`
                     : "Lucky wheel with twelve prize slots and a fixed pointer at the top."
                 }
               >
@@ -331,31 +345,34 @@ export default function LuckyWheelGamePage({ onClose }: { onClose: () => void })
                     />
                   ))}
 
-                  {segments.map((segment) => (
-                    <g
-                      key={`${segment.id}-label`}
-                      transform={`rotate(${segmentCenterAngle(segment.index)} ${WHEEL_CENTER} ${WHEEL_CENTER})`}
-                    >
-                      <text
-                        className="lucky-wheel-segment-prize"
-                        x={WHEEL_CENTER}
-                        y={WHEEL_CENTER - LABEL_RADIUS}
-                        textAnchor="middle"
-                        dominantBaseline="middle"
+                  {segments.map((segment) => {
+                    const prize = payoutFor(segment, LUCKY_WHEEL_CONFIG, stake);
+                    return (
+                      <g
+                        key={`${segment.id}-label`}
+                        transform={`rotate(${segmentCenterAngle(segment.index)} ${WHEEL_CENTER} ${WHEEL_CENTER})`}
                       >
-                        {segment.label}
-                      </text>
-                      <text
-                        className="lucky-wheel-segment-chance"
-                        x={WHEEL_CENTER}
-                        y={WHEEL_CENTER - LABEL_RADIUS + 14}
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                      >
-                        {(prizeProbability(segment, LUCKY_WHEEL_CONFIG) * 100).toFixed(0)}%
-                      </text>
-                    </g>
-                  ))}
+                        <text
+                          className={`lucky-wheel-segment-prize ${String(prize).length > 3 ? "is-long" : ""}`}
+                          x={WHEEL_CENTER}
+                          y={WHEEL_CENTER - LABEL_RADIUS}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                        >
+                          {prize}
+                        </text>
+                        <text
+                          className="lucky-wheel-segment-chance"
+                          x={WHEEL_CENTER}
+                          y={WHEEL_CENTER - LABEL_RADIUS + 14}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                        >
+                          {(prizeProbability(segment, LUCKY_WHEEL_CONFIG) * 100).toFixed(0)}%
+                        </text>
+                      </g>
+                    );
+                  })}
                 </g>
 
                 <g className="lucky-wheel-hub">
@@ -367,7 +384,7 @@ export default function LuckyWheelGamePage({ onClose }: { onClose: () => void })
                     dominantBaseline="middle"
                     className="lucky-wheel-hub-value"
                   >
-                    {result ? result.segment.prize : "—"}
+                    {result ? result.record.payout : "—"}
                   </text>
                   <text
                     x={WHEEL_CENTER}
@@ -393,8 +410,22 @@ export default function LuckyWheelGamePage({ onClose }: { onClose: () => void })
               <strong>{balance.toLocaleString()}</strong>
             </div>
             <div className="lucky-wheel-stake">
-              <span>{stake}-CHIP SPIN</span>
+              <span>STAKE PER SPIN</span>
               <strong>{phase === "spinning" ? "IN MOTION" : `${SEGMENT_COUNT} SLOTS`}</strong>
+            </div>
+            <div className="lucky-wheel-stakes" role="group" aria-label="Stake per spin">
+              {stakes.map((value) => (
+                <button
+                  key={value}
+                  className={`lucky-wheel-stake-chip ${stake === value ? "is-selected" : ""}`}
+                  onClick={() => changeStake(value)}
+                  aria-pressed={stake === value}
+                  disabled={phase === "spinning"}
+                  type="button"
+                >
+                  {value}
+                </button>
+              ))}
             </div>
 
             <button
@@ -436,13 +467,15 @@ export default function LuckyWheelGamePage({ onClose }: { onClose: () => void })
                       className={winningSegmentId === segment.id ? "is-winner" : undefined}
                     >
                       <i style={{ background: segment.color }} aria-hidden="true" />
-                      <span className="lucky-wheel-prize-name">{segment.label}</span>
+                      <span className="lucky-wheel-prize-name">
+                        {payoutFor(segment, LUCKY_WHEEL_CONFIG, stake)}
+                      </span>
                       <span className="lucky-wheel-prize-bar" aria-hidden="true">
                         <b style={{ width: `${probability}%` }} />
                       </span>
                       <span className="lucky-wheel-prize-chance">{probability.toFixed(0)}%</span>
                       <span className="lucky-wheel-prize-chips">
-                        {segment.prize} {segment.prize === 1 ? "chip" : "chips"}
+                        {formatMultiplier(prizeMultiplier(segment, LUCKY_WHEEL_CONFIG))} stake
                       </span>
                     </li>
                   );
@@ -454,8 +487,8 @@ export default function LuckyWheelGamePage({ onClose }: { onClose: () => void })
               <span className="odds-heading">THE MATH, TRANSPARENTLY</span>
               <p>
                 The weights add up to <strong>{total}</strong>, so every weight is also its
-                percentage chance. The best slot pays <strong>250 chips</strong> but only lands one
-                spin in a hundred.
+                percentage chance. The best slot pays <strong>{bestPayout} chips</strong> but only
+                lands one spin in a hundred.
               </p>
               <p className="lucky-wheel-edge">
                 Expected prize <strong>{expectedPrize.toFixed(1)} chips</strong> per spin · stake{" "}
@@ -481,11 +514,11 @@ export default function LuckyWheelGamePage({ onClose }: { onClose: () => void })
                   {history.map((spin) => (
                     <li key={spin.id}>
                       <span className="lucky-wheel-history-prize">
-                        {spin.prize} {spin.prize === 1 ? "chip" : "chips"}
+                        {spin.payout} {spin.payout === 1 ? "chip" : "chips"}
                       </span>
                       <span className="lucky-wheel-history-chance">
-                        slot {spin.segmentIndex + 1} · {(spin.probability * 100).toFixed(0)}% ·{" "}
-                        {RARITY_LABELS[spin.rarity]}
+                        slot {spin.segmentIndex + 1} · {spin.stake}-chip ·{" "}
+                        {(spin.probability * 100).toFixed(0)}% · {RARITY_LABELS[spin.rarity]}
                       </span>
                       <span
                         className={

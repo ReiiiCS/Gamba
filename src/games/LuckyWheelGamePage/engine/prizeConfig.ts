@@ -1,4 +1,4 @@
-import type { PrizeConfig, PrizeRarity } from "./types";
+import type { PrizeConfig, PrizeRarity, PrizeSegment } from "./types";
 
 /**
  * The active Lucky Wheel configuration.
@@ -6,10 +6,15 @@ import type { PrizeConfig, PrizeRarity } from "./types";
  * Weights are relative: the theoretical probability of a prize is
  * `weight / totalWeight`. The weights below sum to 100, so they read directly
  * as percentages.
+ *
+ * Chip prizes are quoted at the default 25-chip stake. The chips a spin pays
+ * are `prize / stake x chosen stake`, so every stake has the same return to
+ * player.
  */
 export const LUCKY_WHEEL_CONFIG: PrizeConfig = {
   version: "lucky-wheel-v1",
   stake: 25,
+  stakes: [10, 25, 50, 100],
   segments: [
     {
       id: "seg-01",
@@ -146,8 +151,10 @@ export const LUCKY_WHEEL_CONFIG: PrizeConfig = {
   ],
 };
 
-/** Prizes at or above this value get the glow + confetti treatment. */
-export const RARE_PRIZE_THRESHOLD = 75;
+/** Rare prizes get the glow, the fanfare and the confetti. */
+export function isRarePrize(segment: PrizeSegment): boolean {
+  return segment.rarity === "rare" || segment.rarity === "legendary";
+}
 
 export const RARITY_LABELS: Record<PrizeRarity, string> = {
   common: "Common",

@@ -16,6 +16,7 @@
 .lucky-wheel-segment { transition: filter .35s ease, opacity .35s ease; }
 .lucky-wheel-segment.is-winner { filter: url(#lucky-wheel-glow); }
 .lucky-wheel-segment-prize { fill: #ffffff; font: 700 17px var(--display); letter-spacing: .02em; paint-order: stroke; stroke: #00000066; stroke-width: 2.5px; }
+.lucky-wheel-segment-prize.is-long { font-size: 13px; }
 .lucky-wheel-segment-chance { fill: #ffffffb0; font: 7px var(--mono); letter-spacing: .06em; paint-order: stroke; stroke: #00000055; stroke-width: 2px; }
 .lucky-wheel-hub circle { fill: #141414; stroke: var(--accent); stroke-width: 2; }
 .lucky-wheel-hub-value { fill: #ffffff; font: 700 20px var(--display); }
@@ -27,6 +28,11 @@
 .lucky-wheel-balance strong { color: var(--accent); font: 700 18px var(--display); letter-spacing: 0; }
 .lucky-wheel-stake { padding-top: 11px; margin-top: 9px; border-top: 1px solid #ffffff14; }
 .lucky-wheel-stake strong { color: #e6dfd4; font: 10px var(--mono); }
+.lucky-wheel-stakes { width: 100%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 8px; }
+.lucky-wheel-stake-chip { padding: 9px 4px; border: 1px solid #ffffff20; color: #cfc8bd; background: #ffffff08; font: 700 10px var(--mono); letter-spacing: .04em; cursor: pointer; transition: color .2s, border-color .2s, background .2s; }
+.lucky-wheel-stake-chip:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.lucky-wheel-stake-chip.is-selected { border-color: var(--accent); color: var(--accent-ink); background: var(--accent); }
+.lucky-wheel-stake-chip:disabled { opacity: .55; cursor: not-allowed; }
 .lucky-wheel-spin-button { position: relative; width: 100%; margin-top: 17px; padding: 14px 35px 14px 14px; }
 .lucky-wheel-spin-button > span { position: absolute; right: 13px; }
 .lucky-wheel-spin-button:disabled { opacity: .55; cursor: not-allowed; }
@@ -80,6 +86,8 @@
   .lucky-wheel-balance, .lucky-wheel-stake { margin-top: 9px; font-size: 7px; }
   .lucky-wheel-balance strong { font-size: 15px; }
   .lucky-wheel-stake { padding-top: 8px; }
+  .lucky-wheel-stakes { gap: 5px; margin-top: 7px; }
+  .lucky-wheel-stake-chip { padding: 8px 2px; font-size: 9px; }
   .lucky-wheel-spin-button { padding: 12px 25px 12px 8px; font-size: 8px; letter-spacing: .04em; }
   .lucky-wheel-spin-button > span { right: 8px; }
   .lucky-wheel-status { min-height: 44px; font-size: 9px; }

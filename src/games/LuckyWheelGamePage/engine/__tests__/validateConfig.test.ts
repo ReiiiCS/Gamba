@@ -98,6 +98,52 @@ describe("validatePrizeConfig", () => {
     const config = { ...cloneConfig(), stake: Number.NaN };
     expect(collectPrizeConfigIssues(config).join(" ")).toMatch(/stake must be a finite/);
   });
+
+  it("rejects a configuration without any stakes", () => {
+    const missing = { ...cloneConfig(), stakes: undefined as never };
+    expect(collectPrizeConfigIssues(missing).join(" ")).toMatch(/at least one stake/);
+
+    const empty = { ...cloneConfig(), stakes: [] };
+    expect(collectPrizeConfigIssues(empty).join(" ")).toMatch(/at least one stake/);
+  });
+
+  it("rejects invalid stakes", () => {
+    const zero = { ...cloneConfig(), stakes: [0, 25, 50, 100] };
+    expect(collectPrizeConfigIssues(zero).join(" ")).toMatch(
+      /stake 0 must be a positive whole number/,
+    );
+
+    const negative = { ...cloneConfig(), stakes: [-10, 25, 50, 100] };
+    expect(collectPrizeConfigIssues(negative).join(" ")).toMatch(
+      /stake -10 must be a positive whole number/,
+    );
+
+    const fractional = { ...cloneConfig(), stakes: [10.5, 25, 50, 100] };
+    expect(collectPrizeConfigIssues(fractional).join(" ")).toMatch(
+      /stake 10.5 must be a positive whole number/,
+    );
+  });
+
+  it("rejects duplicate stakes", () => {
+    const config = { ...cloneConfig(), stakes: [10, 25, 25, 100] };
+    expect(collectPrizeConfigIssues(config).join(" ")).toMatch(/duplicate stake 25/);
+  });
+
+  it("requires the default stake to be one of the available stakes", () => {
+    const config = { ...cloneConfig(), stakes: [10, 50, 100] };
+    expect(collectPrizeConfigIssues(config).join(" ")).toMatch(
+      /default stake 25 must be one of the available stakes \(10, 50, 100\)/,
+    );
+  });
+
+  it("rejects a prize that would pay fractional chips at an allowed stake", () => {
+    // Every shipped prize is a multiple of 5, so a 7-chip stake would pay
+    // fractional amounts (5 / 25 x 7 = 1.4 chips).
+    const config = { ...cloneConfig(), stakes: [10, 25, 50, 100, 7] };
+    expect(collectPrizeConfigIssues(config).join(" ")).toMatch(
+      /would pay .* chips at a 7-chip stake; prizes must be whole chips at every stake/,
+    );
+  });
 });
 
 describe("collectSpinRecordIssues", () => {
