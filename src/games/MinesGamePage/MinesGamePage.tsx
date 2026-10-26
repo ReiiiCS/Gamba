@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import { getMineHitChance, getMultiplier, GRID_SIZE, MAX_MINES } from "./engine/multiplier";
 import "./MinesGamePage.css";
 
-const mineChipValues = [10, 25, 50, 100];
-const mineCountOptions = [1, 3, 5, 7, 10] as const;
-const gridSize = 25;
+const mineChipValues = [5, 10, 25, 50, 100, 250, 500, 1000];
+const mineCountOptions = Array.from({ length: MAX_MINES }, (_, index) => index + 1);
 const startingBalance = 1000;
 const gameName = "NEON MINES";
 
@@ -32,23 +32,16 @@ function shuffle<T>(items: T[]): T[] {
 }
 
 function createMineLayout(mineCount: number): boolean[] {
-  const layout = Array.from({ length: gridSize }, (_, index) => index < mineCount);
+  const layout = Array.from({ length: GRID_SIZE }, (_, index) => index < mineCount);
   return shuffle(layout);
-}
-
-function getMultiplier(mineCount: number, revealedCount: number): number {
-  if (revealedCount <= 0) return 1;
-  let multiplier = 1;
-  for (let step = 0; step < revealedCount; step += 1) {
-    const safeTiles = gridSize - mineCount - step;
-    multiplier *= gridSize - step / safeTiles;
-  }
-  const adjusted = Math.pow(multiplier, 0.95);
-  return Math.max(1.01, Math.round(adjusted * 100) / 100);
 }
 
 function formatMultiplier(multiplier: number): string {
   return `${multiplier.toFixed(multiplier >= 10 ? 0 : multiplier >= 2 ? 2 : 2)}×`;
+}
+
+function formatChipValue(value: number): string {
+  return value >= 1000 ? `${value / 1000}K` : String(value);
 }
 
 function playTone(
@@ -82,7 +75,7 @@ export default function MinesGamePage({ onClose }: { onClose: () => void }) {
   const [mineCount, setMineCount] = useState<MineCount>(3);
   const [layout, setLayout] = useState<boolean[]>(() => createMineLayout(3));
   const [tileStates, setTileStates] = useState<TileState[]>(() =>
-    Array.from({ length: gridSize }, () => "hidden"),
+    Array.from({ length: GRID_SIZE }, () => "hidden"),
   );
   const [gameActive, setGameActive] = useState(false);
   const [gameOver, setGameOver] = useState(false);
@@ -142,11 +135,35 @@ export default function MinesGamePage({ onClose }: { onClose: () => void }) {
     });
   }
 
+  function recordRound(round: Omit<GameHistory, "id">) {
+    const id = nextHistoryId.current;
+    nextHistoryId.current += 1;
+    setHistory((current) => [{ id, ...round }, ...current]);
+  }
+
+  function settleWin(atRevealed: number) {
+    const finalMultiplier = getMultiplier(mineCount, atRevealed);
+    const payout = Math.floor(bet * finalMultiplier);
+    setBalance((current) => current + payout);
+    setGameActive(false);
+    setGameOver(true);
+    playCollect();
+    recordRound({
+      bet,
+      mines: mineCount,
+      revealed: atRevealed,
+      multiplier: finalMultiplier,
+      payout,
+      net: payout - bet,
+      result: "win",
+    });
+  }
+
   function startGame() {
     if (!canStart) return;
     const newLayout = createMineLayout(mineCount);
     setLayout(newLayout);
-    setTileStates(Array.from({ length: gridSize }, () => "hidden"));
+    setTileStates(Array.from({ length: GRID_SIZE }, () => "hidden"));
     setBalance((current) => current - bet);
     setGameActive(true);
     setGameOver(false);
@@ -165,11 +182,7 @@ export default function MinesGamePage({ onClose }: { onClose: () => void }) {
       setGameActive(false);
       setGameOver(true);
       playMine();
-
-      const id = nextHistoryId.current;
-      nextHistoryId.current += 1;
-      const record: GameHistory = {
-        id,
+      recordRound({
         bet,
         mines: mineCount,
         revealed: revealedCount,
@@ -177,8 +190,7 @@ export default function MinesGamePage({ onClose }: { onClose: () => void }) {
         payout: 0,
         net: -bet,
         result: "loss",
-      };
-      setHistory((current) => [record, ...current]);
+      });
       return;
     }
 
@@ -188,40 +200,26 @@ export default function MinesGamePage({ onClose }: { onClose: () => void }) {
     const nextRevealed = revealedCount + 1;
     setTileStates(nextStates);
     setRevealedCount(nextRevealed);
-    playReveal();
+
+    if (nextRevealed === GRID_SIZE - mineCount) {
+      settleWin(nextRevealed);
+    } else {
+      playReveal();
+    }
   }
 
   function collect() {
     if (!gameActive || gameOver || revealedCount === 0) return;
-    const payout = potentialPayout;
-    const net = payout - bet;
-    setBalance((current) => current + payout);
-    setGameActive(false);
-    setGameOver(true);
-    playCollect();
-
-    const id = nextHistoryId.current;
-    nextHistoryId.current += 1;
-    const record: GameHistory = {
-      id,
-      bet,
-      mines: mineCount,
-      revealed: revealedCount,
-      multiplier,
-      payout,
-      net,
-      result: "win",
-    };
-    setHistory((current) => [record, ...current]);
+    settleWin(revealedCount);
   }
 
-  function resetBoard() {
+  function resetBoard(nextMineCount = mineCount) {
     if (gameActive && !gameOver) return;
-    setTileStates(Array.from({ length: gridSize }, () => "hidden"));
+    setTileStates(Array.from({ length: GRID_SIZE }, () => "hidden"));
     setGameActive(false);
     setGameOver(false);
     setRevealedCount(0);
-    setLayout(createMineLayout(mineCount));
+    setLayout(createMineLayout(nextMineCount));
   }
 
   function changeBet(value: number) {
@@ -232,8 +230,7 @@ export default function MinesGamePage({ onClose }: { onClose: () => void }) {
   function changeMineCount(value: MineCount) {
     if (gameActive) return;
     setMineCount(value);
-    setLayout(createMineLayout(value));
-    resetBoard();
+    resetBoard(value);
   }
 
   function resetBalance() {
@@ -244,8 +241,7 @@ export default function MinesGamePage({ onClose }: { onClose: () => void }) {
   }
 
   const showResetBalance = balance < bet && !gameActive;
-  const safeTilesLeft = gridSize - mineCount - revealedCount;
-  const hitChance = safeTilesLeft > 0 ? (mineCount / safeTilesLeft) * 100 : 0;
+  const hitChance = getMineHitChance(mineCount, revealedCount);
 
   function statusText() {
     if (!gameActive && !gameOver) {
@@ -367,7 +363,7 @@ export default function MinesGamePage({ onClose }: { onClose: () => void }) {
               )}
               <button
                 className="open-button mines-action-button"
-                onClick={resetBoard}
+                onClick={() => resetBoard()}
                 disabled={gameActive && !gameOver}
                 type="button"
               >
@@ -399,11 +395,12 @@ export default function MinesGamePage({ onClose }: { onClose: () => void }) {
                     className={`mines-chip ${bet === value ? "is-selected" : ""}`}
                     key={value}
                     onClick={() => changeBet(value)}
+                    aria-label={`${value} chips`}
                     aria-pressed={bet === value}
                     disabled={gameActive}
                     type="button"
                   >
-                    {value}
+                    {formatChipValue(value)}
                   </button>
                 ))}
               </div>
@@ -427,9 +424,10 @@ export default function MinesGamePage({ onClose }: { onClose: () => void }) {
               </div>
 
               <p className="mines-math">
-                {mineCount} mines on {gridSize} tiles. Hitting odds grow with each safe pick. Next
-                gem has roughly <strong>{hitChance.toFixed(1)}%</strong> chance to be a mine (edge
-                cases vary). Multipliers are calculated to stay near a fun, transparent curve.
+                {mineCount} mine{mineCount === 1 ? "" : "s"} on {GRID_SIZE} tiles. Hitting odds grow
+                with each safe pick. The next pick has roughly{" "}
+                <strong>{hitChance.toFixed(1)}%</strong> chance to be a mine. Multipliers use
+                standard fair odds: the payout is the exact inverse of surviving your picks.
               </p>
             </section>
 

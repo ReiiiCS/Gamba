@@ -4,7 +4,7 @@ A responsive, free-to-play game discovery site built with React, TypeScript, and
 
 ## Notice
 
-PLAYROOM is a fictional entertainment demo, not a gambling service. It does not accept or involve real money, offer items with monetary value, or award prizes. Case openings, European roulette spins, and Lucky Wheel spins are simulated for fun only; roulette and the Lucky Wheel use pretend chips with no cash value. Each roulette number has a 1-in-37 chance, standard European payouts are used, and the 2.70% house edge is shown in-game for educational purposes. The Lucky Wheel has twelve weighted prize slots whose weights sum to 100, so each weight is also its percentage chance; the prize is selected with a cryptographically secure random draw before the wheel animates. A spin costs 10, 25, 50, or 100 chips, and the prizes scale with the chosen stake, so the 9.6% house edge is the same at every stake and is shown in-game. There are no deposits, purchases, withdrawals, or cash-outs.
+PLAYROOM is a fictional entertainment demo, not a gambling service. It does not accept or involve real money, offer items with monetary value, or award prizes. Case openings, European roulette spins, Lucky Wheel spins, and Neon Mines rounds are simulated for fun only; roulette, the Lucky Wheel, and Mines use pretend chips with no cash value. Each roulette number has a 1-in-37 chance, standard European payouts are used, and the 2.70% house edge is shown in-game for educational purposes. The Lucky Wheel has twelve weighted prize slots whose weights sum to 100, so each weight is also its percentage chance; the prize is selected with a cryptographically secure random draw before the wheel animates. A spin costs 10, 25, 50, or 100 chips, and the prizes scale with the chosen stake, so the 9.6% house edge is the same at every stake and is shown in-game. Neon Mines uses a 5x5 grid with 1-24 mines and stakes from 5 to 1,000 chips; its multiplier is the exact inverse of the probability of surviving every safe pick, so it has no built-in house edge. There are no deposits, purchases, withdrawals, or cash-outs.
 
 ## Lucky Wheel
 
@@ -21,10 +21,14 @@ Chip prizes are quoted at the default 25-chip stake: a 250-chip prize at 25 chip
 
 `src/games/LuckyWheelGamePage/geometry.ts` turns the server-selected slot id into the final wheel rotation, so the pointer always stops on the slot that was paid out. The animation never picks a prize.
 
+## Mines
+
+The Neon Mines math lives in `src/games/MinesGamePage/engine/multiplier.ts`. With `M` mines on a 25-tile grid, the multiplier after `k` safe picks is `C(25, k) / C(25 - M, k)`, the inverse probability of surviving those picks. That means the game pays exact fair odds with no built-in house edge. The game automatically collects when the final safe tile is revealed, which matters most in the 24-mine mode where only one safe tile exists.
+
 ## Tests
 
 ```bash
 npm test
 ```
 
-Vitest covers the configuration validation, the weighted selection algorithm, the observed prize distribution against the theoretical one, the final-rotation geometry, and the spin service.
+Vitest covers the configuration validation, the weighted selection algorithm, the observed prize distribution against the theoretical one, the final-rotation geometry, the spin service, and the Mines fair-odds multiplier.

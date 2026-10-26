@@ -302,14 +302,14 @@
 }
 
 .mines-setting-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px;
 }
 
 .mines-mine-count {
-  min-width: 52px;
-  padding: 9px 12px;
+  min-width: 0;
+  padding: 8px 0;
   border: 1px solid #ffffff28;
   border-radius: 2px;
   color: #dcd5cc;
