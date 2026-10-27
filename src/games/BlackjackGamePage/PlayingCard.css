@@ -1,0 +1,173 @@
+.playing-card {
+  width: 90px;
+  height: 130px;
+  perspective: 1000px;
+  position: relative;
+  opacity: 0;
+  transform: translateY(-20px) scale(0.9);
+}
+
+.playing-card.dealt {
+  animation: card-deal 0.4s ease-out forwards;
+}
+
+.playing-card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.4s;
+  border-radius: 10px;
+}
+
+.playing-card.flipped .playing-card-inner {
+  transform: rotateY(180deg);
+}
+
+.playing-card-front .playing-card-inner {
+  background: linear-gradient(180deg, #ffffff 0%, #f0f0f0 100%);
+  border: 2px solid #d4af37;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 175, 55, 0.3);
+}
+
+.playing-card-back .playing-card-inner {
+  background: linear-gradient(135deg, #0f4c3a 0%, #1a1a2e 50%, #0f4c3a 100%);
+  border: 2px solid #d4af37;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 175, 55, 0.3);
+}
+
+.playing-card-pattern {
+  position: absolute;
+  inset: 8px;
+  background-image: repeating-linear-gradient(
+      45deg,
+      rgba(212, 175, 55, 0.3) 0px,
+      rgba(212, 175, 55, 0.3) 4px,
+      transparent 4px,
+      transparent 8px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(212, 175, 55, 0.3) 0px,
+      rgba(212, 175, 55, 0.3) 4px,
+      transparent 4px,
+      transparent 8px
+    );
+  border-radius: 6px;
+}
+
+.playing-card-front {
+  transform-style: preserve-3d;
+}
+
+.playing-card-front .playing-card-inner {
+  backface-visibility: hidden;
+}
+
+.playing-card-front::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, #0f4c3a 0%, #1a1a2e 50%, #0f4c3a 100%);
+  border-radius: 10px;
+  border: 2px solid #d4af37;
+}
+
+.playing-card-corner {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  padding: 4px;
+}
+
+.playing-card-corner.top-left {
+  top: 4px;
+  left: 4px;
+}
+
+.playing-card-corner.bottom-right {
+  bottom: 4px;
+  right: 4px;
+  transform: rotate(180deg);
+}
+
+.playing-card-rank {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+}
+
+.playing-card-suit {
+  font-size: 14px;
+  margin-top: 2px;
+}
+
+.playing-card-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 42px;
+  font-weight: bold;
+}
+
+.playing-card.winning {
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.8), 0 0 40px rgba(212, 175, 55, 0.4);
+  animation: winning-glow 1.5s ease-in-out infinite;
+}
+
+@keyframes card-deal {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.8) rotateX(-10deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0deg);
+  }
+}
+
+@keyframes winning-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.8), 0 0 40px rgba(212, 175, 55, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(212, 175, 55, 1), 0 0 60px rgba(212, 175, 55, 0.6);
+  }
+}
+
+@media (max-width: 600px) {
+  .playing-card {
+    width: 70px;
+    height: 100px;
+  }
+  .playing-card-rank {
+    font-size: 13px;
+  }
+  .playing-card-suit {
+    font-size: 11px;
+  }
+  .playing-card-center {
+    font-size: 32px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .playing-card.dealt {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .playing-card.winning {
+    animation: none;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+  }
+  .playing-card-inner {
+    transition: none;
+  }
+}

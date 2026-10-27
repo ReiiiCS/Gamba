@@ -5,6 +5,7 @@ import LuckyWheelGamePage from "./games/LuckyWheelGamePage/LuckyWheelGamePage";
 import SlotGamePage from "./games/SlotGamePage/SlotGamePage";
 import PlinkoGamePage from "./games/PlinkoGamePage/PlinkoGamePage";
 import MinesGamePage from "./games/MinesGamePage/MinesGamePage";
+import BlackjackGamePage from "./games/BlackjackGamePage/BlackjackGamePage";
 
 type Game = {
   title: string;
@@ -19,6 +20,7 @@ type Game = {
   slots?: boolean;
   plinko?: boolean;
   mines?: boolean;
+  blackjack?: boolean;
 };
 
 const games: Game[] = [
@@ -80,6 +82,16 @@ const games: Game[] = [
     tag: "PLAY NOW",
     playable: true,
     mines: true,
+  },
+  {
+    title: "Neon blackjack",
+    category: "CARD TABLE",
+    description: "Beat the dealer. Classic 21 with fair rules.",
+    style: "blackjack",
+    symbol: "♠",
+    tag: "PLAY NOW",
+    playable: true,
+    blackjack: true,
   },
   {
     title: "Wishbound",
@@ -196,6 +208,7 @@ function App() {
     if (selectedGame.slots) return <SlotGamePage onClose={onClose} />;
     if (selectedGame.plinko) return <PlinkoGamePage onClose={onClose} />;
     if (selectedGame.mines) return <MinesGamePage onClose={onClose} />;
+    if (selectedGame.blackjack) return <BlackjackGamePage onClose={onClose} />;
     return selectedGame.playable ? (
       <CaseGamePage onClose={onClose} />
     ) : (
