@@ -6,6 +6,7 @@ const rouletteRedNumbers = new Set([
   1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36,
 ]);
 const rouletteChipValues = [10, 25, 50, 100];
+const startingBalance = 1000;
 const rouletteWheelOrder = [
   0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14,
   31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26,
@@ -106,7 +107,7 @@ function ArrowIcon() {
 }
 
 export default function RouletteGamePage({ onClose }: { onClose: () => void }) {
-  const [balance, setBalance] = useState(1000);
+  const [balance, setBalance] = useState(startingBalance);
   const [chipValue, setChipValue] = useState(10);
   const [selectedBetType, setSelectedBetType] = useState<BetType>("straight");
   const [pendingNumbers, setPendingNumbers] = useState<number[]>([]);
@@ -273,6 +274,21 @@ export default function RouletteGamePage({ onClose }: { onClose: () => void }) {
     }, rouletteSpinDuration);
   }
 
+  function resetBalance() {
+    if (phase === "spinning") return;
+    setBalance(startingBalance);
+    setBets([]);
+    setPendingNumbers([]);
+    setPendingLabel("");
+    setResult(null);
+    setNetChange(null);
+    setLastSpinStake(null);
+    setHistory([]);
+  }
+
+  const minChipValue = Math.min(...rouletteChipValues);
+  const showResetBalance = balance < minChipValue && phase !== "spinning" && bets.length === 0;
+
   const resultColor = result === null ? null : getRouletteColor(result);
 
   return (
@@ -377,6 +393,11 @@ export default function RouletteGamePage({ onClose }: { onClose: () => void }) {
                       ? `Last spin: ${result} ${resultColor}. Even spin—your balance stays the same.`
                       : `Last spin: ${result} ${resultColor}. Net loss: ${Math.abs(netChange).toLocaleString()} virtual chips.`}
             </p>
+            {showResetBalance && (
+              <button className="roulette-reset-button" onClick={resetBalance} type="button">
+                RESET TO 1,000 CHIPS
+              </button>
+            )}
           </section>
 
           <section className="roulette-betting" aria-label="Place your bets">

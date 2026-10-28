@@ -30,6 +30,18 @@ export function saveBalance(balance: number): void {
   } catch {}
 }
 
+export function resetBalance(): number {
+  const balance = STARTING_BALANCE;
+  saveBalance(balance);
+  try {
+    localStorage.setItem(STORAGE_HISTORY_KEY, JSON.stringify([]));
+  } catch {}
+  try {
+    localStorage.setItem(STORAGE_ACTIVE_KEY, JSON.stringify(null));
+  } catch {}
+  return balance;
+}
+
 export function loadHistory(): GameHistoryEntry[] {
   try {
     const raw = localStorage.getItem(STORAGE_HISTORY_KEY);

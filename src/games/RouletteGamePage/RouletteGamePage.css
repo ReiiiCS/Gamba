@@ -90,6 +90,8 @@
 .roulette-clear-button { display: block; margin: 12px auto 0; padding: 6px 8px; border: 0; color: #9c968f; background: transparent; font: 8px var(--mono); letter-spacing: .08em; cursor: pointer; }
 .roulette-clear-button:hover:not(:disabled) { color: var(--paper); }
 .roulette-clear-button:disabled { cursor: wait; }
+.roulette-reset-button { margin-top: 8px; padding: 7px 10px; border: 1px solid #ffffff26; border-radius: 2px; color: #cfc8bd; background: transparent; font: 8px var(--mono); letter-spacing: .08em; cursor: pointer; transition: border-color .2s, color .2s; grid-column: 1 / -1; justify-self: center; }
+.roulette-reset-button:hover { border-color: var(--accent); color: var(--accent); }
 .roulette-history { display: flex; align-items: center; justify-content: center; gap: 15px; padding-top: 17px; margin-top: 21px; border-top: 1px solid #ffffff14; }
 .roulette-history > div { display: flex; gap: 6px; }
 .roulette-history-number { width: 25px; height: 25px; display: grid; place-items: center; border: 1px solid #ffffff23; border-radius: 50%; color: #fff; font: 9px var(--mono); }

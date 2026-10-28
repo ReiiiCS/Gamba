@@ -14,6 +14,7 @@ import {
   loadHistory,
   loadActiveState,
   saveActiveState,
+  resetBalance as resetBalanceEngine,
 } from "./engine/game";
 import { isValidBet } from "./engine/payout";
 import { getHandValue, isPair } from "./engine/hand";
@@ -114,6 +115,17 @@ export default function BlackjackGamePage({ onClose }: { onClose: () => void }) 
     setState(next);
     setShowResult(false);
   }
+
+  function handleResetBalance() {
+    if (state.phase !== "BETTING") return;
+    const newBalance = resetBalanceEngine();
+    setBalance(newBalance);
+    setHistory([]);
+    setState(createInitialState(newBalance, []));
+    setShowResult(false);
+  }
+
+  const showResetBalance = state.phase === "BETTING" && balance < BET_OPTIONS[0];
 
   const getDealerTotal = () => {
     if (state.dealerRevealed && state.dealerHiddenCard) {
@@ -282,6 +294,11 @@ export default function BlackjackGamePage({ onClose }: { onClose: () => void }) 
                 Deal
               </button>
             )}
+            {showResetBalance && (
+              <button className="blackjack-btn" onClick={handleResetBalance} type="button">
+                Reset to $1000
+              </button>
+            )}
             {state.phase === "PLAYER_TURN" && (
               <>
                 <button className="blackjack-btn" onClick={handleHit} disabled={!canHit} type="button">
@@ -307,17 +324,20 @@ export default function BlackjackGamePage({ onClose }: { onClose: () => void }) 
               <span className="odds-heading" id="blackjack-history-title">
                 GAME HISTORY
               </span>
+              {state.history.length > 0 && (
+                <span className="plinko-history-count">{state.history.length} TOTAL</span>
+              )}
             </div>
             {state.history.length === 0 ? (
-              <p className="mines-empty-history">No rounds played yet.</p>
+              <p className="mines-empty-history">Your rounds will show up here.</p>
             ) : (
-              <ol className="blackjack-history-list">
+              <ol className="mines-history-list">
                 {state.history.slice(0, 15).map((round: any) => (
                   <li key={round.id}>
-                    <span>
-                      Bet ${(round.bets || []).join("/$")} | {(round.playerResults || []).map((r: any) => r.result).join(" / ")}
+                    <span className="mines-history-mult">
+                      Bet ${(round.bets || []).join("/$")} · {(round.playerResults || []).map((r: any) => r.result).join(" / ")}
                     </span>
-                    <span className={round.net >= 0 ? "blackjack-history-win" : round.net < 0 ? "blackjack-history-loss" : "blackjack-history-push"}>
+                    <span className={round.net >= 0 ? "mines-history-win" : round.net < 0 ? "mines-history-loss" : "mines-history-win"}>
                       {round.net >= 0 ? `+${round.net}` : round.net}
                     </span>
                   </li>

@@ -69,7 +69,9 @@ export default function PlayingCard({
         aria-label="Hidden card"
       >
         <div className="playing-card-inner">
-          <div className="playing-card-pattern" />
+          <div className="playing-card-back-face">
+            <div className="playing-card-pattern" />
+          </div>
         </div>
       </div>
     );
@@ -83,25 +85,34 @@ export default function PlayingCard({
     <div
       className={`playing-card playing-card-front ${dealt ? "dealt" : ""} ${flipped ? "flipped" : ""} ${
         winning ? "winning" : ""
-      } ${isRed ? "red-suit" : "black-suit"}`}
+      }`}
       style={{ animationDelay: `${dealDelay}ms` }}
       aria-label={`${card.rank} of ${card.suit}`}
     >
       <div className="playing-card-inner">
-        <div className="playing-card-corner top-left">
-          <div className="playing-card-rank">{card.rank}</div>
-          <div className="playing-card-suit" style={{ color: suitColor }}>
+        <div className="playing-card-front-face">
+          <div className="playing-card-corner top-left">
+            <div className="playing-card-rank" style={{ color: suitColor }}>
+              {card.rank}
+            </div>
+            <div className="playing-card-suit" style={{ color: suitColor }}>
+              {suitSymbol}
+            </div>
+          </div>
+          <div className="playing-card-center" style={{ color: suitColor }}>
             {suitSymbol}
           </div>
-        </div>
-        <div className="playing-card-center" style={{ color: suitColor }}>
-          {suitSymbol}
-        </div>
-        <div className="playing-card-corner bottom-right">
-          <div className="playing-card-rank">{card.rank}</div>
-          <div className="playing-card-suit" style={{ color: suitColor }}>
-            {suitSymbol}
+          <div className="playing-card-corner bottom-right">
+            <div className="playing-card-rank" style={{ color: suitColor }}>
+              {card.rank}
+            </div>
+            <div className="playing-card-suit" style={{ color: suitColor }}>
+              {suitSymbol}
+            </div>
           </div>
+        </div>
+        <div className="playing-card-back-face">
+          <div className="playing-card-pattern" />
         </div>
       </div>
     </div>

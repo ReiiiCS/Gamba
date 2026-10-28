@@ -20,20 +20,50 @@
   border-radius: 10px;
 }
 
-.playing-card.flipped .playing-card-inner {
+.playing-card:not(.flipped) .playing-card-inner {
   transform: rotateY(180deg);
 }
 
-.playing-card-front .playing-card-inner {
+.playing-card-back-face {
+  z-index: 2;
+}
+
+.playing-card-front-face {
+  z-index: 1;
+}
+
+.playing-card.flipped .playing-card-back-face {
+  z-index: 1;
+}
+
+.playing-card.flipped .playing-card-front-face {
+  z-index: 2;
+}
+
+.playing-card-front-face,
+.playing-card-back-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.playing-card-front-face {
   background: linear-gradient(180deg, #ffffff 0%, #f0f0f0 100%);
   border: 2px solid #d4af37;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 175, 55, 0.3);
+  transform: rotateY(0deg);
 }
 
-.playing-card-back .playing-card-inner {
+.playing-card-back-face {
   background: linear-gradient(135deg, #0f4c3a 0%, #1a1a2e 50%, #0f4c3a 100%);
   border: 2px solid #d4af37;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 175, 55, 0.3);
+  transform: rotateY(180deg);
 }
 
 .playing-card-pattern {
@@ -54,25 +84,6 @@
       transparent 8px
     );
   border-radius: 6px;
-}
-
-.playing-card-front {
-  transform-style: preserve-3d;
-}
-
-.playing-card-front .playing-card-inner {
-  backface-visibility: hidden;
-}
-
-.playing-card-front::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  transform: rotateY(180deg);
-  background: linear-gradient(135deg, #0f4c3a 0%, #1a1a2e 50%, #0f4c3a 100%);
-  border-radius: 10px;
-  border: 2px solid #d4af37;
 }
 
 .playing-card-corner {
