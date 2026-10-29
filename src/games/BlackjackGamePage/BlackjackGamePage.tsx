@@ -19,7 +19,7 @@ import {
 import { isValidBet } from "./engine/payout";
 import { getHandValue, isPair } from "./engine/hand";
 
-const BET_OPTIONS = [10, 25, 50, 100, 250];
+const BET_OPTIONS = [10, 50, 100, 250];
 
 export default function BlackjackGamePage({ onClose }: { onClose: () => void }) {
   const [balance, setBalance] = useState(loadBalance());
@@ -35,7 +35,7 @@ export default function BlackjackGamePage({ onClose }: { onClose: () => void }) 
     }
     return createInitialState(loadBalance(), loadHistory());
   });
-  const [bet, setBet] = useState(25);
+  const [bet, setBet] = useState(10);
   const [showRules, setShowRules] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const closeButton = useRef<HTMLButtonElement>(null);

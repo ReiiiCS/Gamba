@@ -9,6 +9,7 @@
 }
 
 .blackjack-page .game-page-header {
+  width: 100%;
   max-width: 1360px;
   margin: 0 auto;
   border-bottom: 1px solid #ffffff15;
