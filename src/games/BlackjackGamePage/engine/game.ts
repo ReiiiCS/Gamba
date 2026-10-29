@@ -1,4 +1,4 @@
-import { ActiveGameState, GameHistoryEntry, PlayerHandState, RNG } from "./types";
+import { ActiveGameState, Card, GameHistoryEntry, PlayerHandState, RNG } from "./types";
 import { createDeck, dealCards, shuffleDeck } from "./deck";
 import { getHandValue, isNaturalBlackjack, isPair } from "./hand";
 import { calculatePayout, isValidBet } from "./payout";
@@ -326,14 +326,10 @@ export function hit(state: ActiveGameState, rng: RNG = createCryptoRNG()): Activ
     playerHands: newHands,
   };
   saveActiveState(newState);
-  if (newPhase === "DEALER_TURN") {
-    // play dealer
-    return playDealer(newState, rng);
-  }
   return newState;
 }
 
-export function stand(state: ActiveGameState, rng: RNG = createCryptoRNG()): ActiveGameState {
+export function stand(state: ActiveGameState): ActiveGameState {
   if (state.phase !== "PLAYER_TURN") return state;
   if (state.playerHands.length === 0) return state;
   const idx = state.activeHandIndex;
@@ -372,7 +368,7 @@ export function stand(state: ActiveGameState, rng: RNG = createCryptoRNG()): Act
       }),
     };
     saveActiveState(newState);
-    return playDealer(newState, rng);
+    return newState;
   } else {
     const newState: ActiveGameState = {
       ...state,
@@ -419,9 +415,6 @@ export function doubleDown(state: ActiveGameState, rng: RNG = createCryptoRNG())
   };
   saveBalance(newBalance);
   saveActiveState(newState);
-  if (allDone) {
-    return playDealer(newState, rng);
-  }
   return newState;
 }
 
@@ -493,34 +486,18 @@ export function splitHand(state: ActiveGameState, rng: RNG = createCryptoRNG()):
   };
   saveBalance(newBalance);
   saveActiveState(newState);
-  if (isAces) {
-    return playDealer(newState, rng);
-  }
   return newState;
 }
 
-export function playDealer(state: ActiveGameState, rng: RNG = createCryptoRNG()): ActiveGameState {
-  if (state.phase !== "DEALER_TURN") return state;
-  let dealerCards = [...state.dealerHand];
+function getDealerCardsInOrder(state: ActiveGameState): Card[] {
+  const [upCard, ...drawnCards] = state.dealerHand;
   if (state.dealerHiddenCard) {
-    dealerCards = [...dealerCards, state.dealerHiddenCard];
+    return upCard ? [upCard, state.dealerHiddenCard, ...drawnCards] : [state.dealerHiddenCard, ...drawnCards];
   }
-  let deck = state.deck;
+  return [...state.dealerHand];
+}
 
-  // draw until stand
-  while (true) {
-    const dv = getHandValue(dealerCards);
-    if (dv.isBust) break;
-    // stand on hard 17 or higher, stand on soft 17
-    if (dv.total >= 17) break;
-    if (deck.length === 0) {
-      deck = shuffleDeck(createDeck(), rng);
-    }
-    const d = dealCards(deck, 1);
-    deck = d.remaining;
-    dealerCards = [...dealerCards, ...d.cards];
-  }
-
+function settleDealer(state: ActiveGameState, dealerCards: Card[]): ActiveGameState {
   const dvFinal = getHandValue(dealerCards);
   const dealerBust = dvFinal.isBust;
 
@@ -579,7 +556,6 @@ export function playDealer(state: ActiveGameState, rng: RNG = createCryptoRNG())
   const newState: ActiveGameState = {
     ...state,
     phase: "SETTLED",
-    deck,
     playerHands: resolvedHands,
     dealerHand: dealerCards,
     dealerHiddenCard: null,
@@ -592,6 +568,47 @@ export function playDealer(state: ActiveGameState, rng: RNG = createCryptoRNG())
   saveHistory(newState.history);
   saveActiveState(newState);
   return newState;
+}
+
+export function dealerStep(state: ActiveGameState, rng: RNG = createCryptoRNG()): ActiveGameState {
+  if (state.phase !== "DEALER_TURN") return state;
+
+  // Reveal the hole card first so the player can see it before any draw.
+  if (!state.dealerRevealed) {
+    const revealed: ActiveGameState = { ...state, dealerRevealed: true };
+    saveActiveState(revealed);
+    return revealed;
+  }
+
+  const dealerCards = getDealerCardsInOrder(state);
+  const dv = getHandValue(dealerCards);
+  if (dv.isBust || dv.total >= 17) {
+    return settleDealer(state, dealerCards);
+  }
+
+  let deck = state.deck;
+  if (deck.length === 0) {
+    deck = shuffleDeck(createDeck(), rng);
+  }
+  const d = dealCards(deck, 1);
+  const newState: ActiveGameState = {
+    ...state,
+    deck: d.remaining,
+    dealerHand: [...state.dealerHand, ...d.cards],
+    dealerRevealed: true,
+  };
+  saveActiveState(newState);
+  return newState;
+}
+
+export function playDealer(state: ActiveGameState, rng: RNG = createCryptoRNG()): ActiveGameState {
+  let current = state;
+  let steps = 0;
+  while (current.phase === "DEALER_TURN" && steps < 30) {
+    current = dealerStep(current, rng);
+    steps += 1;
+  }
+  return current;
 }
 
 export function newRound(state: ActiveGameState): ActiveGameState {

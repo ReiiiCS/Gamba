@@ -15,6 +15,8 @@ import {
   loadActiveState,
   saveActiveState,
   resetBalance as resetBalanceEngine,
+  dealerStep,
+  playDealer,
 } from "./engine/game";
 import { isValidBet } from "./engine/payout";
 import { getHandValue, isPair } from "./engine/hand";
@@ -59,9 +61,33 @@ export default function BlackjackGamePage({ onClose }: { onClose: () => void }) 
 
   useEffect(() => {
     if (state.phase === "SETTLED" && state.playerHands.length > 0) {
-      setShowResult(true);
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const timer = window.setTimeout(() => setShowResult(true), prefersReducedMotion ? 0 : 700);
+      return () => window.clearTimeout(timer);
     }
   }, [state.phase, state.playerHands.length]);
+
+  useEffect(() => {
+    if (state.phase !== "DEALER_TURN") return;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReducedMotion) {
+      const next = playDealer(state);
+      setState(next);
+      setBalance(next.balance);
+      setHistory(next.history);
+      return;
+    }
+
+    const delay = state.dealerRevealed ? 800 : 500;
+    const timer = window.setTimeout(() => {
+      const next = dealerStep(state);
+      setState(next);
+      setBalance(next.balance);
+      setHistory(next.history);
+    }, delay);
+    return () => window.clearTimeout(timer);
+  }, [state]);
 
   const canDealNow = state.phase === "BETTING" && isValidBet(bet) && balance >= bet;
   const currentHand = state.playerHands[state.activeHandIndex];
@@ -179,6 +205,37 @@ export default function BlackjackGamePage({ onClose }: { onClose: () => void }) 
     return "";
   };
 
+  const dealerCards = (() => {
+    const hiddenCard = state.dealerHiddenCard;
+    if (hiddenCard) {
+      const [upCard, ...drawnCards] = state.dealerHand;
+      return [
+        ...(upCard ? [{ key: "d-0", card: upCard, hidden: false, flip: false, dealDelay: 0 }] : []),
+        {
+          key: "d-1",
+          card: state.dealerRevealed ? hiddenCard : null,
+          hidden: !state.dealerRevealed,
+          flip: state.dealerRevealed,
+          dealDelay: 0,
+        },
+        ...drawnCards.map((card, idx) => ({
+          key: `d-${idx + 2}`,
+          card,
+          hidden: false,
+          flip: false,
+          dealDelay: 0,
+        })),
+      ];
+    }
+    return state.dealerHand.map((card, idx) => ({
+      key: `d-${idx}`,
+      card,
+      hidden: false,
+      flip: false,
+      dealDelay: idx * 150,
+    }));
+  })();
+
   return (
     <main className="game-page blackjack-page">
       <header className="game-page-header">
@@ -212,15 +269,16 @@ export default function BlackjackGamePage({ onClose }: { onClose: () => void }) 
           <div className="blackjack-dealer-area">
             <div className="blackjack-area-label">DEALER</div>
             <div className="blackjack-cards-row">
-              {state.dealerHand.map((card: any, idx: number) => (
-                <PlayingCard key={`d-${idx}`} card={card} dealDelay={idx * 150} animate={state.phase !== "BETTING"} />
+              {dealerCards.map(({ key, card, hidden, flip, dealDelay }) => (
+                <PlayingCard
+                  key={key}
+                  card={card}
+                  hidden={hidden}
+                  flip={flip}
+                  dealDelay={dealDelay}
+                  animate={state.phase !== "BETTING"}
+                />
               ))}
-              {state.phase !== "SETTLED" && state.phase !== "BETTING" && state.dealerHiddenCard && !state.dealerRevealed && (
-                <PlayingCard card={null} hidden={true} dealDelay={200} animate={true} />
-              )}
-              {state.dealerRevealed && state.dealerHiddenCard && (
-                <PlayingCard card={state.dealerHiddenCard} dealDelay={300} flip={true} animate={true} />
-              )}
             </div>
             {(state.dealerRevealed || state.phase === "DEALER_TURN") && state.dealerHand.length > 0 && (
               <div className="blackjack-hand-total">

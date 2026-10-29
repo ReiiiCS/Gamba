@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Card } from "./engine/types";
 import "./PlayingCard.css";
 
@@ -60,6 +60,13 @@ export default function PlayingCard({
       if (flipTimer) clearTimeout(flipTimer);
     };
   }, [animate, dealDelay, flip, prefersReducedMotion]);
+
+  // Restart the flip animation whenever a face-down card becomes a flip-in card.
+  useLayoutEffect(() => {
+    if (flip && animate && !prefersReducedMotion) {
+      setFlipped(false);
+    }
+  }, [animate, flip, prefersReducedMotion]);
 
   if (hidden || !card) {
     return (
