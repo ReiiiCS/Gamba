@@ -82,21 +82,113 @@ h1 em, .section-heading h2 em, .manifesto h2 em { color: var(--accent); font-sty
 .game-grid > .game-card:last-child:nth-child(odd) { grid-column: 1 / -1; aspect-ratio: 4.4; }
 .game-card { position: relative; display: block; isolation: isolate; width: 100%; min-width: 0; aspect-ratio: 2.2; overflow: hidden; padding: 20px; text-align: left; border: 1px solid #d3a64a; border-radius: 2px; background: #1f1f1f; cursor: pointer; transition: transform .25s, border-color .25s, box-shadow .25s; }
 .game-card:hover { z-index: 1; transform: translateY(-5px); border-color: #ffe49a; box-shadow: 0 0 0 1px #d3a64a, 0 0 18px #d3a64a55; }
-.art-vault { --art-a: #e50914; --art-b: #4a0206; background: linear-gradient(90deg, #141414f5 0%, #141414d9 32%, transparent 68%), radial-gradient(ellipse at 78% 26%, #ff8a5c40, transparent 28%), radial-gradient(ellipse at 32% 30%, #e5091480, transparent 34%), linear-gradient(135deg, #7a0710, #1a1a1a 75%); }
-.art-wish { --art-a: #72c9ff; --art-b: #24144f; background: linear-gradient(90deg, #12102bf5 0%, #141414d9 32%, transparent 68%), radial-gradient(ellipse at 74% 24%, #fff1a885, transparent 16%), radial-gradient(ellipse at 34% 22%, #7b8dff72, transparent 33%), linear-gradient(135deg, #284c9b, #17152f 80%); }
-.art-relic { --art-a: #ffc45c; --art-b: #5a3011; background: linear-gradient(90deg, #1c130df5 0%, #141414d9 32%, transparent 68%), radial-gradient(ellipse at 76% 26%, #ffe08a70, transparent 26%), radial-gradient(ellipse at 33% 24%, #d77a3470, transparent 34%), linear-gradient(135deg, #8a5720, #302018 75%); }
-.art-pixel { --art-a: #ff71d1; --art-b: #27205f; background: linear-gradient(90deg, #131033f5 0%, #141414d9 32%, transparent 68%), radial-gradient(ellipse at 75% 26%, #70f6ff65, transparent 22%), radial-gradient(ellipse at 31% 28%, #ff71d15e, transparent 33%), linear-gradient(135deg, #6b378d, #202454 78%); }
-.game-card.art-roulette { --art-a: #d6b34e; --art-b: #06452d; background-color: #06452d; background-image: url("/images/casino-games-banner-collection.png"); background-size: auto 300%; background-position: 73% 0%; background-repeat: no-repeat; }
-.game-card.art-slots { --art-a: #df39f2; --art-b: #24094f; background-color: #24094f; background-image: url("/images/casino-games-banner-collection.png"); background-size: auto 300%; background-position: 68% 50%; background-repeat: no-repeat; }
-.game-card.art-plinko { --art-a: #38aaff; --art-b: #063b78; background-color: #063b78; background-image: url("/images/casino-games-banner-collection.png"); background-size: auto 300%; background-position: 59% 100%; background-repeat: no-repeat; }
-.game-card.art-mines { --art-a: #38aaff; --art-b: #04141f; background: radial-gradient(ellipse at 76% 24%, #38aaff55, transparent 24%), radial-gradient(ellipse at 32% 28%, #4bd9a555, transparent 28%), linear-gradient(135deg, #0b1f33, #101820 78%); }
+.art-vault {
+  --art-a: #e50914;
+  --art-b: #4a0206;
+  background:
+    linear-gradient(90deg, #141414f5 0%, #141414d9 32%, transparent 68%),
+    radial-gradient(circle at 78% 50%, #0b0b0b 0 7%, #e50914 7.5% 8.5%, transparent 9%),
+    radial-gradient(circle at 78% 50%, transparent 0 34%, #d3a64a66 34.5% 35.5%, transparent 36%),
+    repeating-conic-gradient(from 0deg at 78% 50%, #ffffff14 0deg 4deg, transparent 4deg 30deg),
+    radial-gradient(ellipse at 78% 50%, #e5091440, transparent 45%),
+    linear-gradient(135deg, #7a0710, #1a1a1a 75%);
+}
+.art-wish {
+  --art-a: #72c9ff;
+  --art-b: #24144f;
+  background:
+    linear-gradient(90deg, #12102bf5 0%, #141414d9 32%, transparent 68%),
+    radial-gradient(circle at 82% 22%, #fff1a8 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 68% 66%, #ffffffcc 0 1px, transparent 2px),
+    radial-gradient(circle at 90% 78%, #fff1a8 0 1px, transparent 2px),
+    radial-gradient(circle, #ffffff66 0 1px, transparent 1.8px) 0 0 / 34px 34px,
+    radial-gradient(circle, #fff1a855 0 1px, transparent 1.8px) 17px 17px / 34px 34px,
+    radial-gradient(ellipse at 74% 24%, #fff1a870, transparent 16%),
+    linear-gradient(135deg, #284c9b, #17152f 80%);
+}
+.art-relic {
+  --art-a: #ffc45c;
+  --art-b: #5a3011;
+  background:
+    linear-gradient(90deg, #1c130df5 0%, #141414d9 32%, transparent 68%),
+    radial-gradient(circle at 78% 50%, transparent 0 9%, #ffc45c33 9.5% 10.5%, transparent 11% 19%, #ffc45c22 19.5% 20.5%, transparent 21%),
+    repeating-conic-gradient(from 45deg at 78% 50%, #ffc45c18 0deg 4deg, transparent 4deg 45deg),
+    radial-gradient(circle at 78% 50%, transparent 0 30%, #ffc45c33 30.5% 31.5%, transparent 32%),
+    radial-gradient(ellipse at 76% 26%, #ffe08a70, transparent 26%),
+    linear-gradient(135deg, #8a5720, #302018 75%);
+}
+.art-pixel {
+  --art-a: #ff71d1;
+  --art-b: #27205f;
+  background:
+    linear-gradient(90deg, #131033f5 0%, #141414d9 32%, transparent 68%),
+    repeating-linear-gradient(0deg, #ffffff0d 0 1px, transparent 1px 16px),
+    repeating-linear-gradient(90deg, #ffffff0d 0 1px, transparent 1px 16px),
+    linear-gradient(135deg, #ff71d11f 0 25%, transparent 25%),
+    radial-gradient(ellipse at 75% 26%, #70f6ff65, transparent 22%),
+    radial-gradient(ellipse at 31% 28%, #ff71d15e, transparent 33%),
+    linear-gradient(135deg, #6b378d, #202454 78%);
+}
+.game-card.art-roulette {
+  --art-a: #f2cf70;
+  --art-b: #123c2c;
+  background:
+    linear-gradient(90deg, #141414f2 0%, #141414cc 32%, transparent 68%),
+    radial-gradient(circle at 78% 50%, #247044 0 14%, #dbbd69 14.5% 15.5%, transparent 16%),
+    radial-gradient(circle at 78% 50%, transparent 0 32%, #dbbd69aa 32.5% 33.5%, transparent 34%),
+    repeating-conic-gradient(from -3deg at 78% 50%, #1c8050 0deg 9.5deg, #a92835 9.5deg 19deg, #171615 19deg 28.5deg),
+    linear-gradient(135deg, #246448, #14231e 80%);
+}
+.game-card.art-slots {
+  --art-a: #ffd166;
+  --art-b: #612b1b;
+  background:
+    linear-gradient(90deg, #141414f2 0%, #141414cc 32%, transparent 68%),
+    linear-gradient(90deg, transparent 0 56%, #2a141080 56% 70%, #ffffff12 70% 71%, #2a141080 71% 85%, #ffffff12 85% 86%, #2a141080 86% 100%),
+    repeating-linear-gradient(0deg, #00000026 0 1px, transparent 1px 26px),
+    radial-gradient(ellipse at 78% 50%, #ffd16626, transparent 45%),
+    linear-gradient(135deg, #a64b24, #40201d 80%);
+}
+.game-card.art-plinko {
+  --art-a: #9dfc91;
+  --art-b: #132c4b;
+  background:
+    linear-gradient(90deg, #141414f2 0%, #141414cc 32%, transparent 68%),
+    radial-gradient(circle at 50% 115%, #d9b45b26, transparent 45%),
+    radial-gradient(circle, #ffe9b080 0 1.5px, transparent 2.5px) 0 0 / 24px 24px,
+    radial-gradient(circle, #ffe9b04d 0 1.5px, transparent 2.5px) 12px 12px / 24px 24px,
+    linear-gradient(135deg, #1e6545, #10213a 82%);
+}
+.game-card.art-mines {
+  --art-a: #38aaff;
+  --art-b: #04141f;
+  background:
+    linear-gradient(90deg, #141414f2 0%, #141414cc 32%, transparent 68%),
+    radial-gradient(circle, #4bd9a566 0 2px, transparent 3px) 0 0 / 30px 30px,
+    repeating-linear-gradient(0deg, #4bd9a522 0 1px, transparent 1px 30px),
+    repeating-linear-gradient(90deg, #4bd9a522 0 1px, transparent 1px 30px),
+    radial-gradient(ellipse at 76% 24%, #38aaff55, transparent 24%),
+    radial-gradient(ellipse at 32% 28%, #4bd9a555, transparent 28%),
+    linear-gradient(135deg, #0b1f33, #101820 78%);
+}
+.game-card.art-blackjack {
+  --art-a: #d4af37;
+  --art-b: #051f17;
+  background:
+    linear-gradient(90deg, #141414f2 0%, #141414cc 32%, transparent 68%),
+    radial-gradient(circle at 78% 50%, #0f4c3a 0 20%, #d4af3740 20.5% 21.5%, transparent 22%),
+    repeating-linear-gradient(45deg, #ffffff08 0 1px, transparent 1px 13px),
+    repeating-linear-gradient(-45deg, #ffffff08 0 1px, transparent 1px 13px),
+    radial-gradient(ellipse at 78% 45%, #d4af3726, transparent 45%),
+    linear-gradient(135deg, #0a3528, #0a0a0a 80%);
+}
 .game-card.art-luckywheel { --art-a: #ff9f1c; --art-b: #3a1a05; background: conic-gradient(from -15deg at 78% 48%, #e5484d 0deg 30deg, #f5a524 30deg 60deg, #2f9e44 60deg 90deg, #1c7ed6 90deg 120deg, #7048e8 120deg 150deg, #d6336c 150deg 180deg, #e5484d 180deg 210deg, #f5a524 210deg 240deg, #2f9e44 240deg 270deg, #1c7ed6 270deg 300deg, #7048e8 300deg 330deg, #d6336c 330deg 360deg), #17120c; }
 .game-card.art-roulette .card-art-symbol, .game-card.art-slots .card-art-symbol, .game-card.art-plinko .card-art-symbol, .game-card.art-luckywheel .card-art-symbol { display: none; }
 .card-art-symbol { position: absolute; top: 50%; right: 7%; font: 120px/1 var(--display); color: #ffffff8c; text-shadow: 0 0 35px #fff7, 0 8px 24px #0008; transform: translateY(-50%) rotate(8deg); transition: transform .3s; }
 .art-slots .card-art-symbol { top: 50%; right: 6%; font-size: clamp(58px, 6vw, 80px); letter-spacing: -.12em; color: #ffe08a; text-shadow: 0 0 25px #ffb347b0, 0 5px 16px #0009; transform: translateY(-50%) rotate(-5deg); }
 .game-card:hover .card-art-symbol { transform: translateY(-50%) rotate(0) scale(1.06); }
 .card-shade { position: absolute; z-index: -1; inset: 0; background: linear-gradient(180deg, rgba(20, 20, 20, 0) 0%, rgba(20, 20, 20, 0.12) 30%, rgba(20, 20, 20, 0.46) 58%, rgba(20, 20, 20, 0.9) 100%), radial-gradient(circle at 22% 18%, color-mix(in srgb, var(--art-a, #e50914) 38%, transparent) 0%, transparent 30%), linear-gradient(135deg, color-mix(in srgb, var(--art-b, #141414) 72%, #000 28%) 0%, rgba(20, 20, 20, 0.88) 100%); }
-.game-card.art-roulette .card-shade, .game-card.art-slots .card-shade, .game-card.art-plinko .card-shade { background: linear-gradient(90deg, color-mix(in srgb, var(--art-b) 97%, #000 3%) 0%, color-mix(in srgb, var(--art-b) 90%, transparent) 36%, transparent 68%), linear-gradient(180deg, transparent 48%, color-mix(in srgb, var(--art-b) 62%, #000 38%) 100%); }
+.game-card.art-roulette .card-shade, .game-card.art-slots .card-shade { background: linear-gradient(90deg, color-mix(in srgb, var(--art-b) 97%, #000 3%) 0%, color-mix(in srgb, var(--art-b) 90%, transparent) 36%, transparent 68%), linear-gradient(180deg, transparent 48%, color-mix(in srgb, var(--art-b) 62%, #000 38%) 100%); }
 .card-content { position: absolute; inset: 0 auto 0 20px; width: 52%; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
 .card-category { margin-bottom: 10px; color: var(--art-a, var(--accent)); font: 500 9px var(--mono); letter-spacing: .14em; text-transform: uppercase; }
 .card-title { margin-bottom: 6px; font: 400 27px var(--display); letter-spacing: .02em; }
