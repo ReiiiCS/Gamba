@@ -144,9 +144,22 @@ h1 em, .section-heading h2 em, .manifesto h2 em { color: var(--accent); font-sty
   --art-b: #612b1b;
   background:
     linear-gradient(90deg, #141414f2 0%, #141414cc 32%, transparent 68%),
-    linear-gradient(90deg, transparent 0 56%, #2a141080 56% 70%, #ffffff12 70% 71%, #2a141080 71% 85%, #ffffff12 85% 86%, #2a141080 86% 100%),
-    repeating-linear-gradient(0deg, #00000026 0 1px, transparent 1px 26px),
-    radial-gradient(ellipse at 78% 50%, #ffd16626, transparent 45%),
+    linear-gradient(180deg, #00000040 0%, transparent 18%, transparent 82%, #00000040 100%),
+    repeating-linear-gradient(0deg, #00000010 0 1px, transparent 1px 26px),
+    linear-gradient(
+      90deg,
+      transparent 0 52%,
+      #2a1410 52% 54%,
+      #8a583d 54% 54.5%,
+      #f4e6c6 54.5% 70%,
+      #8a583d 70% 70.5%,
+      #f4e6c6 70.5% 85%,
+      #8a583d 85% 85.5%,
+      #f4e6c6 85.5% 99%,
+      #8a583d 99% 99.5%,
+      #2a1410 99.5% 100%
+    ),
+    radial-gradient(ellipse at 78% 50%, #ffd16633, transparent 55%),
     linear-gradient(135deg, #a64b24, #40201d 80%);
 }
 .game-card.art-plinko {
@@ -154,9 +167,12 @@ h1 em, .section-heading h2 em, .manifesto h2 em { color: var(--accent); font-sty
   --art-b: #132c4b;
   background:
     linear-gradient(90deg, #141414f2 0%, #141414cc 32%, transparent 68%),
-    radial-gradient(circle at 50% 115%, #d9b45b26, transparent 45%),
-    radial-gradient(circle, #ffe9b080 0 1.5px, transparent 2.5px) 0 0 / 24px 24px,
-    radial-gradient(circle, #ffe9b04d 0 1.5px, transparent 2.5px) 12px 12px / 24px 24px,
+    radial-gradient(circle at 32% 28%, #fff, #f7e6c2 55%, #cfa654 90%) 78% 45% / 12px 12px no-repeat,
+    repeating-linear-gradient(90deg, #2f9b74 0 12.5%, #9dc039 12.5% 25%, #c64da8 25% 37.5%, #d9a23a 37.5% 50%, #c64da8 50% 62.5%, #9dc039 62.5% 75%, #2f9b74 75% 87.5%, #d9a23a 87.5% 100%) 92% 88% / 34% 8px no-repeat,
+    radial-gradient(ellipse at 78% 45%, transparent 0 38%, #10213a 72%),
+    radial-gradient(circle, #ffe9b0aa 0 1.5px, transparent 2.5px) 0 0 / 22px 22px,
+    radial-gradient(circle, #ffe9b080 0 1.5px, transparent 2.5px) 11px 11px / 22px 22px,
+    radial-gradient(ellipse at 78% 100%, #d9b45b33, transparent 45%),
     linear-gradient(135deg, #1e6545, #10213a 82%);
 }
 .game-card.art-mines {
@@ -164,11 +180,17 @@ h1 em, .section-heading h2 em, .manifesto h2 em { color: var(--accent); font-sty
   --art-b: #04141f;
   background:
     linear-gradient(90deg, #141414f2 0%, #141414cc 32%, transparent 68%),
-    radial-gradient(circle, #4bd9a566 0 2px, transparent 3px) 0 0 / 30px 30px,
-    repeating-linear-gradient(0deg, #4bd9a522 0 1px, transparent 1px 30px),
-    repeating-linear-gradient(90deg, #4bd9a522 0 1px, transparent 1px 30px),
-    radial-gradient(ellipse at 76% 24%, #38aaff55, transparent 24%),
-    radial-gradient(ellipse at 32% 28%, #4bd9a555, transparent 28%),
+    radial-gradient(circle at 61% 28%, #4bd9a5 0 3px, transparent 4px),
+    radial-gradient(circle at 79% 28%, #4bd9a5 0 3px, transparent 4px),
+    radial-gradient(circle at 88% 50%, #ff6b6b 0 3px, transparent 4px),
+    radial-gradient(circle at 70% 50%, #4bd9a5 0 3px, transparent 4px),
+    radial-gradient(circle at 61% 72%, #4bd9a5 0 3px, transparent 4px),
+    radial-gradient(circle at 79% 72%, #ff6b6b 0 3px, transparent 4px),
+    linear-gradient(90deg, transparent 0 8%, #4bd9a51a 8% 92%, transparent 92%) 0 0 / 9% 100%,
+    linear-gradient(0deg, transparent 0 8%, #4bd9a51a 8% 92%, transparent 92%) 0 0 / 100% 20%,
+    repeating-linear-gradient(90deg, #4bd9a533 0 1px, transparent 1px 9%),
+    repeating-linear-gradient(0deg, #4bd9a533 0 1px, transparent 1px 20%),
+    radial-gradient(ellipse at 78% 50%, #38aaff33, transparent 50%),
     linear-gradient(135deg, #0b1f33, #101820 78%);
 }
 .game-card.art-blackjack {
@@ -183,9 +205,9 @@ h1 em, .section-heading h2 em, .manifesto h2 em { color: var(--accent); font-sty
     linear-gradient(135deg, #0a3528, #0a0a0a 80%);
 }
 .game-card.art-luckywheel { --art-a: #ff9f1c; --art-b: #3a1a05; background: conic-gradient(from -15deg at 78% 48%, #e5484d 0deg 30deg, #f5a524 30deg 60deg, #2f9e44 60deg 90deg, #1c7ed6 90deg 120deg, #7048e8 120deg 150deg, #d6336c 150deg 180deg, #e5484d 180deg 210deg, #f5a524 210deg 240deg, #2f9e44 240deg 270deg, #1c7ed6 270deg 300deg, #7048e8 300deg 330deg, #d6336c 330deg 360deg), #17120c; }
-.game-card.art-roulette .card-art-symbol, .game-card.art-slots .card-art-symbol, .game-card.art-plinko .card-art-symbol, .game-card.art-luckywheel .card-art-symbol { display: none; }
+.game-card.art-roulette .card-art-symbol, .game-card.art-plinko .card-art-symbol, .game-card.art-luckywheel .card-art-symbol { display: none; }
 .card-art-symbol { position: absolute; top: 50%; right: 7%; font: 120px/1 var(--display); color: #ffffff8c; text-shadow: 0 0 35px #fff7, 0 8px 24px #0008; transform: translateY(-50%) rotate(8deg); transition: transform .3s; }
-.art-slots .card-art-symbol { top: 50%; right: 6%; font-size: clamp(58px, 6vw, 80px); letter-spacing: -.12em; color: #ffe08a; text-shadow: 0 0 25px #ffb347b0, 0 5px 16px #0009; transform: translateY(-50%) rotate(-5deg); }
+.art-slots .card-art-symbol { top: 50%; right: 6%; font-size: clamp(58px, 6vw, 80px); letter-spacing: -.12em; color: #7a2f16; text-shadow: 0 1px 0 #fff6, 0 6px 16px #0006; transform: translateY(-50%) rotate(-5deg); }
 .game-card:hover .card-art-symbol { transform: translateY(-50%) rotate(0) scale(1.06); }
 .card-shade { position: absolute; z-index: -1; inset: 0; background: linear-gradient(180deg, rgba(20, 20, 20, 0) 0%, rgba(20, 20, 20, 0.12) 30%, rgba(20, 20, 20, 0.46) 58%, rgba(20, 20, 20, 0.9) 100%), radial-gradient(circle at 22% 18%, color-mix(in srgb, var(--art-a, #e50914) 38%, transparent) 0%, transparent 30%), linear-gradient(135deg, color-mix(in srgb, var(--art-b, #141414) 72%, #000 28%) 0%, rgba(20, 20, 20, 0.88) 100%); }
 .game-card.art-roulette .card-shade, .game-card.art-slots .card-shade { background: linear-gradient(90deg, color-mix(in srgb, var(--art-b) 97%, #000 3%) 0%, color-mix(in srgb, var(--art-b) 90%, transparent) 36%, transparent 68%), linear-gradient(180deg, transparent 48%, color-mix(in srgb, var(--art-b) 62%, #000 38%) 100%); }
