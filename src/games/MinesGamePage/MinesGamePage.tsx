@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { getMineHitChance, getMultiplier, GRID_SIZE, MAX_MINES } from "./engine/multiplier";
+import { usePersistentBalance } from "../shared/usePersistentBalance";
 import "./MinesGamePage.css";
 
 const mineChipValues = [5, 10, 25, 50, 100, 250, 500, 1000];
 const mineCountOptions = Array.from({ length: MAX_MINES }, (_, index) => index + 1);
 const startingBalance = 1000;
+const balanceStorageKey = "playroom.balance.mines.v1";
 const gameName = "NEON MINES";
 
 type MineCount = (typeof mineCountOptions)[number];
@@ -70,7 +72,7 @@ function ArrowIcon() {
 }
 
 export default function MinesGamePage({ onClose }: { onClose: () => void }) {
-  const [balance, setBalance] = useState(startingBalance);
+  const [balance, setBalance] = usePersistentBalance(balanceStorageKey, startingBalance);
   const [bet, setBet] = useState(10);
   const [mineCount, setMineCount] = useState<MineCount>(3);
   const [layout, setLayout] = useState<boolean[]>(() => createMineLayout(3));

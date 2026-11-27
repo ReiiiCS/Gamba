@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { usePersistentBalance } from "../shared/usePersistentBalance";
 import "./PlinkoGamePage.css";
 
 const plinkoChipValues = [10, 25, 50, 100];
 const plinkoRowOptions = [8, 12, 16] as const;
 const plinkoRiskOptions = ["low", "medium", "high"] as const;
 const startingBalance = 1000;
+const balanceStorageKey = "playroom.balance.plinko.v1";
 const ballStartX = 50;
 const ballStartY = 4;
 const slotY = 84;
@@ -156,7 +158,7 @@ function ArrowIcon() {
 }
 
 export default function PlinkoGamePage({ onClose }: { onClose: () => void }) {
-  const [balance, setBalance] = useState(startingBalance);
+  const [balance, setBalance] = usePersistentBalance(balanceStorageKey, startingBalance);
   const [bet, setBet] = useState(10);
   const [rows, setRows] = useState<number>(8);
   const [risk, setRisk] = useState<Risk>("medium");

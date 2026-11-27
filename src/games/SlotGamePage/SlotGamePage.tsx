@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { usePersistentBalance } from "../shared/usePersistentBalance";
 import "./SlotGamePage.css";
 
 const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path}`;
@@ -21,6 +22,7 @@ type SpinRecord = {
 };
 
 const startingBalance = 1000;
+const balanceStorageKey = "playroom.balance.slots.v1";
 const spinCost = 10;
 const spinDuration = 2350;
 const reelStopIndex = 16;
@@ -49,7 +51,7 @@ function makeReelStrip(result: SlotSymbol): SlotSymbol[] {
 }
 
 export default function SlotGamePage({ onClose }: { onClose: () => void }) {
-  const [balance, setBalance] = useState(startingBalance);
+  const [balance, setBalance] = usePersistentBalance(balanceStorageKey, startingBalance);
   const [wins, setWins] = useState(0);
   const [losses, setLosses] = useState(0);
   const [history, setHistory] = useState<SpinRecord[]>([]);

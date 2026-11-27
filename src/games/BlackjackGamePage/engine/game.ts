@@ -37,7 +37,7 @@ export function resetBalance(): number {
     localStorage.setItem(STORAGE_HISTORY_KEY, JSON.stringify([]));
   } catch {}
   try {
-    localStorage.setItem(STORAGE_ACTIVE_KEY, JSON.stringify(null));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(null));
   } catch {}
   return balance;
 }

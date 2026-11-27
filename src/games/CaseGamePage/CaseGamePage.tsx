@@ -9,15 +9,18 @@ import {
   type CaseResult,
   type Prize,
 } from "./engine";
+import { usePersistentBalance } from "../shared/usePersistentBalance";
 
 type Phase = "ready" | "rolling" | "revealed";
+
+const balanceStorageKey = "playroom.balance.cases.v1";
 
 function ArrowIcon() {
   return <span aria-hidden="true">↗</span>;
 }
 
 export default function CaseGamePage({ onClose }: { onClose: () => void }) {
-  const [balance, setBalance] = useState(STARTING_BALANCE);
+  const [balance, setBalance] = usePersistentBalance(balanceStorageKey, STARTING_BALANCE);
   const [selectedCaseId, setSelectedCaseId] = useState(CASES[0].id);
   const [phase, setPhase] = useState<Phase>("ready");
   const [pendingResult, setPendingResult] = useState<CaseResult | null>(null);

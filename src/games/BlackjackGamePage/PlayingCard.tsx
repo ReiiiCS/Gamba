@@ -86,7 +86,6 @@ export default function PlayingCard({
 
   const suitSymbol = getSuitSymbol(card.suit);
   const suitColor = getSuitColor(card.suit);
-  const isRed = suitColor === "#d62828";
 
   return (
     <div

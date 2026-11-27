@@ -15,11 +15,20 @@ The prize engine lives in `src/games/LuckyWheelGamePage/engine` and is the only 
 - `validateConfig.ts` — rejects negative, non-finite, or zero-total weights, duplicate prize ids, invalid reward amounts, invalid stakes, and any prize that would not pay whole chips at every allowed stake.
 - `random.ts` / `selectPrize.ts` — a cryptographically secure draw plus weighted selection (`weight / totalWeight`).
 - `spinService.ts` — load → validate → draw → select → persist → settle, including the stake debit and the balance check.
-- `store.ts` — the balance and spin log. The game uses an in-memory store, so every session starts with 1,000 chips and an empty history, exactly like the other games.
+- `store.ts` — the balance and spin log, stored in the browser when `localStorage` is available. A new browser profile starts with 1,000 chips and an empty history.
 
 Chip prizes are quoted at the default 25-chip stake: a 250-chip prize at 25 chips pays 100 at a 10-chip stake, 500 at 50, and 1,000 at 100. Because every payout scales by the same factor, the 90.4% return to player holds at every stake.
 
-`src/games/LuckyWheelGamePage/geometry.ts` turns the server-selected slot id into the final wheel rotation, so the pointer always stops on the slot that was paid out. The animation never picks a prize.
+`src/games/LuckyWheelGamePage/geometry.ts` turns the selected slot id into the final wheel rotation, so the pointer always stops on the slot that was paid out. The animation never picks a prize.
+
+## Deploying on Vercel
+
+Import the repository into Vercel and use the Vite defaults:
+
+- Build command: `npm run build`
+- Output directory: `dist`
+
+Guest balances are stored separately for each game in the visitor's browser profile and the current site origin. Visitors on different browsers/devices do not share chips; Vercel preview URLs also have separate data from the production domain. Progress does not sync across devices and can be cleared or edited by the visitor. Browser-local values are only suitable for this free-play demo, not authoritative balances or prizes.
 
 ## Mines
 
