@@ -236,7 +236,17 @@ h1 em, .section-heading h2 em, .manifesto h2 em { color: var(--accent); font-sty
 .site-footer > a:last-child:hover { color: var(--accent); }
 
 .game-page { min-height: 100vh; min-height: 100svh; padding: 0 6.1%; background: radial-gradient(ellipse at 50% 33%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 48%), #141414; animation: fade-in .2s ease-out; }
-.case-page { --accent: #e50914; --accent-ink: #ffffff; }
+.case-page {
+  --accent: #e50914;
+  --accent-ink: #ffffff;
+  background-color: #090b12;
+  background-image:
+    radial-gradient(ellipse at 82% 18%, #e5091426, transparent 38%),
+    radial-gradient(ellipse at 12% 78%, #6518a51c, transparent 40%),
+    linear-gradient(#ffffff08 1px, transparent 1px),
+    linear-gradient(90deg, #ffffff08 1px, transparent 1px);
+  background-size: auto, auto, 48px 48px, 48px 48px;
+}
 .roulette-page { --accent: #d6b34e; --accent-ink: #1b1405; }
 .slot-page { --accent: #df39f2; --accent-ink: #1b0420; }
 .plinko-page { --accent: #38aaff; --accent-ink: #04141f; }
